@@ -1,16 +1,14 @@
 const express = require("express");
 const router = express.Router();
 const Manufacturers = require("../models/Manufacturer");
-const db = require("../config/database");
-const {SERVER_ERROR, NOT_FOUND, BAD_REQUEST, CREATED} = require("../http-status-codes");
-
+const {INTERNAL_SERVER_ERROR, NOT_FOUND, BAD_REQUEST, CREATED} = require("../http-status-codes");
 
 router.get("/", async (req, res) => {
     try {
         const manufacturers = await Manufacturers.findAll();
         res.send(manufacturers);
     } catch (err) {
-        res.sendStatus(SERVER_ERROR);
+        res.sendStatus(INTERNAL_SERVER_ERROR);
     }
 });
 
@@ -22,7 +20,7 @@ router.get("/:id", async (req, res) => {
         }
         res.send(manufacturer);
     } catch (err) {
-        res.sendStatus(SERVER_ERROR);
+        res.sendStatus(INTERNAL_SERVER_ERROR);
     }
 });
 
@@ -43,7 +41,7 @@ router.post("/create", async (req, res) => {
             .header({Location: `/manufacturer/${manufacturer.manufacturer_id}`})
             .send(manufacturer);
     } catch (err) {
-        res.sendStatus(SERVER_ERROR);
+        res.sendStatus(INTERNAL_SERVER_ERROR);
     }
 });
 
@@ -56,7 +54,7 @@ router.delete("/:id", async (req, res) => {
         await manufacturer.destroy();
         res.sendStatus(200);
     } catch (err) {
-        res.sendStatus(SERVER_ERROR);
+        res.sendStatus(INTERNAL_SERVER_ERROR);
     }
 });
 
@@ -67,7 +65,7 @@ router.put("/:id", async (req, res) => {
         const updatedManufacturer = await manufacturer.update({name, location});
         res.send(updatedManufacturer);
     } catch (err) {
-        res.sendStatus(SERVER_ERROR);
+        res.sendStatus(INTERNAL_SERVER_ERROR);
     }
 });
 

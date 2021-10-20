@@ -1,6 +1,6 @@
 const {Sequelize} = require("sequelize");
 const db = require("../config/database");
-
+const Phone = require("./phone");
 
 const Manufacturer = db.define("Manufacturer", {
     manufacturer_id: {
@@ -18,6 +18,5 @@ const Manufacturer = db.define("Manufacturer", {
         type: Sequelize.STRING(500),
     }
 });
-
 
 module.exports = Manufacturer;
