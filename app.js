@@ -15,8 +15,11 @@ app.use(express.urlencoded({extended: true}));
 
 const manufacturersRouter = require("./routes/manufacturers")(Manufacturer, Phone);
 const phonesRouter = require("./routes/phones")(Manufacturer, Phone);
+const userRouter = require("./routes/users");
+
 app.use("/manufacturer", manufacturersRouter);
 app.use("/phone", phonesRouter);
+app.use("/user", userRouter);
 
 
 db.sync({force: true})
