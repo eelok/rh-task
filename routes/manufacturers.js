@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 
 const {INTERNAL_SERVER_ERROR, NOT_FOUND, BAD_REQUEST, CREATED} = require("../http-status-codes");
+const passport = require("passport");
 
 module.exports = (Manufacturers, Phone) => {
     router.get("/", async (req, res) => {
@@ -25,7 +26,7 @@ module.exports = (Manufacturers, Phone) => {
         }
     });
 
-    router.post("/create", async (req, res) => {
+    router.post("/create", passport.authenticate('basic', { session: false }), async (req, res) => {
         const {name} = req.body;
         if (!name || !name.trim()) {
             return res

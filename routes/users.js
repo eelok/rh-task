@@ -3,7 +3,7 @@ const {BAD_REQUEST, CREATED, INTERNAL_SERVER_ERROR, UNAUTHORIZED} = require("../
 const router = express.Router();
 const User = require("../models/User");
 const bcrypt = require('bcrypt');
-const e = require("express");
+const passport = require("passport");
 const saltRounds = 10;
 
 router.post("/register", async (req, res) => {
