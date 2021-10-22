@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const {NOT_FOUND, INTERNAL_SERVER_ERROR, CREATED, BAD_REQUEST} = require("../http-status-codes");
+const passport = require("passport");
 
 module.exports = (Manufacturers, Phone) => {
     router.get("/:id", async (req, res) => {
@@ -16,7 +17,7 @@ module.exports = (Manufacturers, Phone) => {
     });
 
     //todo releaseDate fix
-    router.post("/create/:manufacturer_id", async (req, res) => {
+    router.post("/create/:manufacturer_id", passport.authenticate("basic", {session: false}), async (req, res) => {
         try {
             const manufacturer = await Manufacturers.findByPk(req.params.manufacturer_id);
             if(!manufacturer) {
@@ -46,7 +47,7 @@ module.exports = (Manufacturers, Phone) => {
         }
     });
 
-    router.delete("/:id", async (req, res) => {
+    router.delete("/:id", passport.authenticate("basic", {session: false}),async (req, res) => {
         try {
             const phone = await Phone.findByPk(req.params.id);
             if (!phone) {
@@ -60,7 +61,7 @@ module.exports = (Manufacturers, Phone) => {
     });
 
     //todo check new input data
-    router.put("/:id", async (req, res) => {
+    router.put("/:id", passport.authenticate("basic", {session: false}),async (req, res) => {
         try {
             const {name, quantity, releaseDate} = req.body;
             const phone = await Phone.findByPk(req.params.id);

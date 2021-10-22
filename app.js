@@ -42,10 +42,16 @@ passport.use(new BasicStrategy(async (username, password, done) => {
 
 db.sync({force: true})
     .then((result => {
-        return Manufacturer.create({name: "Apple", location: "California"});
+        return Manufacturer.bulkCreate([
+            {name: "Apple", location: "California"},
+            {name: "Siemens", location: "Germany"},
+            ]
+        );
     }))
-    .then(manufacturer => {
-        return manufacturer.createPhone({name: "iPhone13", quantity: 10, releaseDate: "2021-009-01"});
+    .then(manufacturers=> {
+        manufacturers.map(m => {
+            return m.createPhone({name: `${m.name}Phone`, quantity: 10, releaseDate: "2021-009-01"}, )
+        })
     });
 
 

@@ -3,6 +3,7 @@ const router = express.Router();
 
 const {INTERNAL_SERVER_ERROR, NOT_FOUND, BAD_REQUEST, CREATED} = require("../http-status-codes");
 const passport = require("passport");
+const {where} = require("sequelize");
 
 module.exports = (Manufacturers, Phone) => {
     router.get("/", async (req, res) => {
@@ -14,7 +15,7 @@ module.exports = (Manufacturers, Phone) => {
         }
     });
 
-    router.get("/:id", async (req, res) => {
+    router.get("/:id", passport.authenticate("basic", {session: false}), async (req, res) => {
         try {
             const manufacturer = await Manufacturers.findByPk(req.params.id);
             if (!manufacturer) {
@@ -26,7 +27,7 @@ module.exports = (Manufacturers, Phone) => {
         }
     });
 
-    router.post("/create", passport.authenticate('basic', { session: false }), async (req, res) => {
+    router.post("/create", passport.authenticate("basic", {session: false}), async (req, res) => {
         const {name} = req.body;
         if (!name || !name.trim()) {
             return res
@@ -47,11 +48,15 @@ module.exports = (Manufacturers, Phone) => {
         }
     });
 
-    router.delete("/:id", async (req, res) => {
+    router.delete("/:id", passport.authenticate("basic", {session: false}), async (req, res) => {
         try {
             const manufacturer = await Manufacturers.findByPk(req.params.id);
             if (!manufacturer) {
                 return res.sendStatus(NOT_FOUND);
+            }
+            const phones = await Phone.findAll({where: {manufacturer_id: manufacturer.manufacturer_id}});
+            if(phones){
+               Phone.destroy({where: {manufacturer_id: manufacturer.manufacturer_id}});
             }
             await manufacturer.destroy();
             res.sendStatus(200);
@@ -60,7 +65,7 @@ module.exports = (Manufacturers, Phone) => {
         }
     });
 
-    router.put("/:id", async (req, res) => {
+    router.put("/:id", passport.authenticate("basic", {session: false}), async (req, res) => {
         try {
             const {name, location} = req.body;
             const manufacturer = await Manufacturers.findByPk(req.params.id);
