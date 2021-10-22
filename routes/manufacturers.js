@@ -3,7 +3,6 @@ const router = express.Router();
 
 const {INTERNAL_SERVER_ERROR, NOT_FOUND, BAD_REQUEST, CREATED} = require("../http-status-codes");
 const passport = require("passport");
-const {where} = require("sequelize");
 
 module.exports = (Manufacturers, Phone) => {
     router.get("/", async (req, res) => {
@@ -55,8 +54,9 @@ module.exports = (Manufacturers, Phone) => {
                 return res.sendStatus(NOT_FOUND);
             }
             const phones = await Phone.findAll({where: {manufacturer_id: manufacturer.manufacturer_id}});
-            if(phones){
-               Phone.destroy({where: {manufacturer_id: manufacturer.manufacturer_id}});
+            console.log("PHONES: >>>>>>>", phones);
+            if (phones.length > 0) {
+                Phone.destroy({where: {manufacturer_id: manufacturer.manufacturer_id}});
             }
             await manufacturer.destroy();
             res.sendStatus(200);

@@ -50,7 +50,7 @@ db.sync({force: true})
     }))
     .then(manufacturers=> {
         manufacturers.map(m => {
-            return m.createPhone({name: `${m.name}Phone`, quantity: 10, releaseDate: "2021-009-01"}, )
+            return m.createPhone({name: `${m.name}Phone`, quantity: 10, releaseDate: "2021-009-01"});
         })
     });
 
