@@ -3,21 +3,19 @@ const app = express();
 const passport = require('passport');
 const BasicStrategy = require('passport-http').BasicStrategy;
 
-const db = require("./config/database");
-const Manufacturer = require("./models/manufacturer");
-const Phone = require("./models/phone");
-const User = require("./models/user");
+// const db = require("./configMY/database");
+const { sequelize } = require('./models');
 
-Manufacturer.hasMany(Phone, {
-    foreignKey: 'manufacturer_id'
-});
+// Manufacturer.associations(Phone, {
+//     foreignKey: 'manufacturer_id'
+// });
 
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 app.use(passport.initialize());
 
-const manufacturersRouter = require("./routes/manufacturers")(Manufacturer, Phone);
-const phonesRouter = require("./routes/phones")(Manufacturer, Phone);
+const manufacturersRouter = require("./routes/manufacturers")(sequelize.models.Manufacturer, sequelize.models.Phone);
+const phonesRouter = require("./routes/phones")(sequelize.models.Manufacturer, sequelize.models.Phone);
 const userRouter = require("./routes/users");
 const bcrypt = require("bcrypt");
 
@@ -27,7 +25,7 @@ app.use("/user", userRouter);
 
 passport.use(new BasicStrategy(async (username, password, done) => {
     try {
-        const user = await User.findOne({where: {name: username}});
+        const user = await sequelize.models.User.findOne({where: {name: username}});
         if (!user) {
             return done(null, false);
         }
@@ -40,19 +38,19 @@ passport.use(new BasicStrategy(async (username, password, done) => {
     }
 }));
 
-db.sync({force: true})
-    .then((result => {
-        return Manufacturer.bulkCreate([
-            {name: "Apple", location: "California"},
-            {name: "Siemens", location: "Germany"},
-            ]
-        );
-    }))
-    .then(manufacturers=> {
-        manufacturers.map(m => {
-            return m.createPhone({name: `${m.name}Phone`, quantity: 10, releaseDate: "2021-009-01"});
-        })
-    });
+// db.sync({force: true})
+//     .then((result => {
+//         return Manufacturer.bulkCreate([
+//             {name: "Apple", location: "California"},
+//             {name: "Siemens", location: "Germany"},
+//             ]
+//         );
+//     }))
+//     .then(manufacturers=> {
+//         manufacturers.map(m => {
+//             return m.createPhone({name: `${m.name}Phone`, quantity: 10, releaseDate: "2021-009-01"});
+//         })
+//     });
 
 
 const port = process.env.PORT || 5000

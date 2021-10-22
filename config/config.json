@@ -1,0 +1,26 @@
+{
+  "development": {
+    "username": "postgres",
+    "password": "postgres",
+    "database": "rhtask",
+    "host": "127.0.0.1",
+    "logging": true,
+    "dialect": "postgres"
+  },
+  "test": {
+    "username": "postgres",
+    "password": "postgres",
+    "database": "rhtask",
+    "host": "127.0.0.1",
+    "logging": true,
+    "dialect": "postgres"
+  },
+  "production": {
+    "username": "postgres",
+    "password": "postgres",
+    "database": "rhtask",
+    "host": "127.0.0.1",
+    "logging": true,
+    "dialect": "postgres"
+  }
+}
