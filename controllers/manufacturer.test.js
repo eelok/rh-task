@@ -2,9 +2,11 @@ const manufacturerController = require("./manufacturer");
 jest.mock("../models");
 const {Manufacturer, Phone} = require("../models");
 const {NOT_FOUND, CREATED, BAD_REQUEST, OK} = require("../http-status-codes");
-const {param} = require("express/lib/router");
 
 describe("Manufacturer Unit Tests", () => {
+    beforeEach(() => {
+        jest.clearAllMocks();
+    });
     test("Should call res.send with all manufacturers", async () => {
         const req = {};
         const res = jest.fn();
@@ -41,8 +43,8 @@ describe("Manufacturer Unit Tests", () => {
         const newManufacturer = {name: "testName", id: 42};
         const req = {body: newManufacturer};
         const res = jest.fn();
-        res.status = jest.fn().mockImplementation(status => res);
-        res.header = jest.fn().mockImplementation(header => res);
+        res.status = jest.fn().mockImplementation(() => res);
+        res.header = jest.fn().mockImplementation(() => res);
         res.send = jest.fn();
         Manufacturer.findOne.mockResolvedValue(undefined);
         Manufacturer.create.mockResolvedValue(newManufacturer);
@@ -57,7 +59,7 @@ describe("Manufacturer Unit Tests", () => {
         const newManufacturer = {name: "", id: 42};
         const req = {body: newManufacturer};
         const res = jest.fn();
-        res.status = jest.fn().mockImplementation(status => res);
+        res.status = jest.fn().mockImplementation(() => res);
         res.send = jest.fn();
 
         await manufacturerController.createManufacturer(req, res);
@@ -69,7 +71,7 @@ describe("Manufacturer Unit Tests", () => {
         const newManufacturer = {name: "testName", id: 42};
         const req = {body: newManufacturer};
         const res = jest.fn();
-        res.status = jest.fn().mockImplementation(status => res);
+        res.status = jest.fn().mockImplementation(() => res);
         res.send = jest.fn();
         Manufacturer.findOne.mockResolvedValue(newManufacturer);
 
@@ -82,9 +84,9 @@ describe("Manufacturer Unit Tests", () => {
         const manufacturer = {name: "testName", id: 2, destroy: jest.fn()};
         const req = {params: {id: manufacturer.id}};
         const res = jest.fn();
-        res.sendStatus = jest.fn().mockImplementation(sendStatus => res);
+        res.sendStatus = jest.fn().mockImplementation(() => res);
         Manufacturer.findByPk.mockResolvedValue(manufacturer);
-        manufacturer.destroy.mockResolvedValue();
+        manufacturer.destroy.mockResolvedValue(undefined);
 
         await manufacturerController.deleteById(req, res);
 
@@ -92,16 +94,16 @@ describe("Manufacturer Unit Tests", () => {
         expect(Manufacturer.findByPk.mock.calls[0][0]).toBe(manufacturer.id);
     });
     test("Should send NOT_FOUND when no such manufacturer", async () => {
-        const manufacturer = {name: "test", id: 22};
-        const req = {params: {id: manufacturer.id}};
+        let manufacturerId = 22;
+        const req = {params: {id: manufacturerId}};
         const res = jest.fn();
-        res.sendStatus = jest.fn().mockImplementation(sendStatus => res);
+        res.sendStatus = jest.fn().mockImplementation(() => res);
         Manufacturer.findByPk.mockResolvedValue(undefined);
 
         await manufacturerController.deleteById(req, res);
 
+        expect(Manufacturer.findByPk.mock.calls[0][0]).toBe(manufacturerId);
         expect(res.sendStatus.mock.calls[0][0]).toBe(NOT_FOUND);
-        expect(Manufacturer.findByPk.mock.calls[0][0]).toBe(manufacturer.id);
     });
     test("Should return res.send with updated manufacturer when manufacturer was updated", async () => {
         const manufacturer = {name: "test", id: 22, update: jest.fn()};
