@@ -2,6 +2,7 @@ const manufacturerController = require("./manufacturer");
 jest.mock("../models");
 const {Manufacturer, Phone} = require("../models");
 const {NOT_FOUND, CREATED, BAD_REQUEST, OK} = require("../http-status-codes");
+const {param} = require("express/lib/router");
 
 describe("Manufacturer Unit Tests", () => {
     test("Should call res.send with all manufacturers", async () => {
@@ -101,5 +102,21 @@ describe("Manufacturer Unit Tests", () => {
 
         expect(res.sendStatus.mock.calls[0][0]).toBe(NOT_FOUND);
         expect(Manufacturer.findByPk.mock.calls[0][0]).toBe(manufacturer.id);
+    });
+    test("Should re.send when manufacturer was updated", async () => {
+        const manufacturer = {name: "test", id: 22, update: jest.fn()};
+        const req = {
+            params: {id: manufacturer.id},
+            body: manufacturer
+        };
+        const res = jest.fn();
+        res.send = jest.fn();
+        Manufacturer.findByPk.mockResolvedValue(manufacturer);
+        const updatedManufacturer = {name: "test1", id: 22};
+        manufacturer.update.mockResolvedValue(updatedManufacturer);
+
+        await manufacturerController.update(req, res);
+
+        expect(res.send.mock.calls[0][0]).toBe(updatedManufacturer);
     });
 });

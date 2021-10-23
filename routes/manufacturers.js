@@ -14,23 +14,10 @@ router.post("/create", passport.authenticate("basic", {session: false}), manufac
 
 router.delete("/:id", passport.authenticate("basic", {session: false}), manufacturerController.deleteById);
 
-router.put("/:id", passport.authenticate("basic", {session: false}), async (req, res) => {
-    try {
-        const {name, location} = req.body;
-        const manufacturer = await Manufacturer.findByPk(req.params.id);
-        const updatedManufacturer = await manufacturer.update({name, location});
-        res.send(updatedManufacturer);
-    } catch (err) {
-        res.sendStatus(INTERNAL_SERVER_ERROR);
-    }
-});
+router.put("/:id", passport.authenticate("basic", {session: false}), manufacturerController.update);
 
 router.get("/:manufacturer_id/phones", async (req, res) => {
     try {
-        const manufacturer = await Manufacturer.findByPk(req.params.manufacturer_id);
-        if (!manufacturer) {
-            return res.sendStatus(NOT_FOUND);
-        }
         const phones = await Phone.findAll({where: {manufacturerId: req.params.manufacturer_id}});
         if (!phones) {
             return res.sendStatus(NOT_FOUND);

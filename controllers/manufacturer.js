@@ -55,3 +55,14 @@ exports.deleteById = async (req, res) => {
         res.sendStatus(INTERNAL_SERVER_ERROR);
     }
 };
+
+exports.update = async (req, res) => {
+    try {
+        const {name, location} = req.body;
+        const manufacturer = await Manufacturer.findByPk(req.params.id);
+        const updatedManufacturer = await manufacturer.update({name, location});
+        res.send(updatedManufacturer);
+    } catch (err) {
+        res.sendStatus(INTERNAL_SERVER_ERROR);
+    }
+};
