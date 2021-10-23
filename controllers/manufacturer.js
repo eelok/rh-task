@@ -1,5 +1,5 @@
 const {Manufacturer} = require("../models");
-const {INTERNAL_SERVER_ERROR, NOT_FOUND} = require("../http-status-codes");
+const {INTERNAL_SERVER_ERROR, NOT_FOUND, BAD_REQUEST, CREATED} = require("../http-status-codes");
 
 exports.listAll = async (req, res) => {
     try {
@@ -17,6 +17,27 @@ exports.getById = async (req, res) => {
             return res.sendStatus(NOT_FOUND);
         }
         res.send(manufacturer);
+    } catch (err) {
+        res.sendStatus(INTERNAL_SERVER_ERROR);
+    }
+};
+
+exports.createManufacturer =  async (req, res) => {
+    const {name} = req.body;
+    if (!name || !name.trim()) {
+        return res
+            .status(BAD_REQUEST)
+            .send("manufacturer name is required");
+    }
+    try {
+        if (await Manufacturer.findOne({where: {name: name}})) {
+            return res.status(BAD_REQUEST).send(`Manufacturer with name ${name} already exists`);
+        }
+        const manufacturer = await Manufacturer.create(req.body);
+        res
+            .status(CREATED)
+            .header({Location: `/manufacturer/${manufacturer.id}`})
+            .send(manufacturer);
     } catch (err) {
         res.sendStatus(INTERNAL_SERVER_ERROR);
     }

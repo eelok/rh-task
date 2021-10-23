@@ -10,26 +10,7 @@ router.get("/", manufacturerController.listAll);
 
 router.get("/:id", passport.authenticate("basic", {session: false}), manufacturerController.getById);
 
-router.post("/create", passport.authenticate("basic", {session: false}), async (req, res) => {
-    const {name} = req.body;
-    if (!name || !name.trim()) {
-        return res
-            .status(BAD_REQUEST)
-            .send("manufacturer name is required");
-    }
-    try {
-        if (await Manufacturer.findOne({where: {name: name}})) {
-            return res.status(BAD_REQUEST).send(`Manufacturer with name ${name} already exists`);
-        }
-        const manufacturer = await Manufacturer.create(req.body);
-        res
-            .status(CREATED)
-            .header({Location: `/manufacturer/${manufacturer.manufacturer_id}`})
-            .send(manufacturer);
-    } catch (err) {
-        res.sendStatus(INTERNAL_SERVER_ERROR);
-    }
-});
+router.post("/create", passport.authenticate("basic", {session: false}), manufacturerController.createManufacturer);
 
 router.delete("/:id", passport.authenticate("basic", {session: false}), async (req, res) => {
     try {
