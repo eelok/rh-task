@@ -1,25 +1,23 @@
 const express = require("express");
 const app = express();
 const passport = require('passport');
-const { sequelize } = require('./models');
+const { User } = require('./models');
 const BasicStrategy = require('passport-http').BasicStrategy;
 const manufacturersRouter = require("./routes/manufacturers");
 const phonesRouter = require("./routes/phones");
+const userRouter = require("./routes/users");
+const bcrypt = require("bcrypt");
 
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 app.use(passport.initialize());
-
-const userRouter = require("./routes/users");
-const bcrypt = require("bcrypt");
-
 app.use("/manufacturer", manufacturersRouter);
 app.use("/phone", phonesRouter);
 app.use("/user", userRouter);
 
 passport.use(new BasicStrategy(async (username, password, done) => {
     try {
-        const user = await sequelize.models.User.findOne({where: {name: username}});
+        const user = await User.findOne({where: {name: username}});
         if (!user) {
             return done(null, false);
         }

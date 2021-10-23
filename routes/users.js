@@ -1,8 +1,7 @@
 const express = require("express");
 const {BAD_REQUEST, CREATED, INTERNAL_SERVER_ERROR, UNAUTHORIZED} = require("../http-status-codes");
 const router = express.Router();
-const { sequelize } = require('../models');
-const User = sequelize.models.User;
+const { User } = require('../models');
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
 

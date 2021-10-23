@@ -16,7 +16,6 @@ router.get("/:id", async (req, res) => {
     }
 });
 
-//todo releaseDate fix
 router.post("/create/:manufacturer_id", passport.authenticate("basic", {session: false}), async (req, res) => {
     try {
         const manufacturer = await Manufacturer.findByPk(req.params.manufacturer_id);
@@ -37,7 +36,7 @@ router.post("/create/:manufacturer_id", passport.authenticate("basic", {session:
         if (await Phone.findOne({where: {name: name}})) {
             return res.status(BAD_REQUEST).send(`Phone with name ${name} already exists`);
         }
-        const newPhone = await manufacturer.createPhone({name, quantity});
+        const newPhone = await manufacturer.createPhone({name, quantity, releaseDate});
         res
             .status(CREATED)
             .header({Location: `phone/create/${newPhone.manufacturer_id}`})
@@ -60,7 +59,6 @@ router.delete("/:id", passport.authenticate("basic", {session: false}), async (r
     }
 });
 
-//todo check new input data
 router.put("/:id", passport.authenticate("basic", {session: false}), async (req, res) => {
     try {
         const {name, quantity, releaseDate} = req.body;

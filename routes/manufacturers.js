@@ -53,10 +53,10 @@ router.delete("/:id", passport.authenticate("basic", {session: false}), async (r
         if (!manufacturer) {
             return res.sendStatus(NOT_FOUND);
         }
-        const phones = await Phone.findAll({where: {manufacturer_id: manufacturer.manufacturer_id}});
+        const phones = await Phone.findAll({where: {manufacturerId: manufacturer.id}});
         console.log("PHONES: >>>>>>>", phones);
         if (phones.length > 0) {
-            await Phone.destroy({where: {manufacturer_id: manufacturer.manufacturer_id}});
+            await Phone.destroy({where: {manufacturerId: manufacturer.id}});
         }
         await manufacturer.destroy();
         res.sendStatus(200);
@@ -82,7 +82,7 @@ router.get("/:manufacturer_id/phones", async (req, res) => {
         if (!manufacturer) {
             return res.sendStatus(NOT_FOUND);
         }
-        const phones = await Phone.findAll({where: {manufacturer_id: req.params.manufacturer_id}});
+        const phones = await Phone.findAll({where: {manufacturerId: req.params.manufacturer_id}});
         if (!phones) {
             return res.sendStatus(NOT_FOUND);
         }
