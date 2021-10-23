@@ -23,6 +23,7 @@ module.exports = {
       },
       manufacturerId: {
         type: DataTypes.INTEGER,
+        onDelete: 'CASCADE',
         references: {
           model: 'Manufacturers',
           key: 'id'
