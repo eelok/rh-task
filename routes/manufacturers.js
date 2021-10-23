@@ -16,16 +16,6 @@ router.delete("/:id", passport.authenticate("basic", {session: false}), manufact
 
 router.put("/:id", passport.authenticate("basic", {session: false}), manufacturerController.update);
 
-router.get("/:manufacturer_id/phones", async (req, res) => {
-    try {
-        const phones = await Phone.findAll({where: {manufacturerId: req.params.manufacturer_id}});
-        if (!phones) {
-            return res.sendStatus(NOT_FOUND);
-        }
-        res.send(phones);
-    } catch (err) {
-        res.sendStatus(INTERNAL_SERVER_ERROR);
-    }
-});
+router.get("/:id/phones", manufacturerController.findAllPhonesByManufacturerId);
 
 module.exports = router;

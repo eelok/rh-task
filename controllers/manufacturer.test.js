@@ -103,7 +103,7 @@ describe("Manufacturer Unit Tests", () => {
         expect(res.sendStatus.mock.calls[0][0]).toBe(NOT_FOUND);
         expect(Manufacturer.findByPk.mock.calls[0][0]).toBe(manufacturer.id);
     });
-    test("Should re.send when manufacturer was updated", async () => {
+    test("Should return res.send with updated manufacturer when manufacturer was updated", async () => {
         const manufacturer = {name: "test", id: 22, update: jest.fn()};
         const req = {
             params: {id: manufacturer.id},
@@ -118,5 +118,35 @@ describe("Manufacturer Unit Tests", () => {
         await manufacturerController.update(req, res);
 
         expect(res.send.mock.calls[0][0]).toBe(updatedManufacturer);
+    });
+    test("Should return res.send with all phones according to manufacturer id", async () => {
+        const manufacturer = {name: "test", id: 22};
+        const req = {
+            params: {id: manufacturer.id},
+        };
+        const res = jest.fn();
+        res.send = jest.fn();
+
+        const phones = [{name: "one"}, {name: "two"}];
+        Phone.findAll.mockResolvedValue(phones);
+
+        await manufacturerController.findAllPhonesByManufacturerId(req, res);
+
+        expect(res.send.mock.calls[0][0]).toBe(phones);
+    });
+    test("Should return NOT_FOUND manufacturer doesn't have any phones", async () => {
+        const manufacturer = {name: "test", id: 22};
+        const req = {
+            params: {id: manufacturer.id},
+        };
+        const res = jest.fn();
+        res.sendStatus = jest.fn();
+
+        const phones = undefined;
+        Phone.findAll.mockResolvedValue(phones);
+
+        await manufacturerController.findAllPhonesByManufacturerId(req, res);
+
+        expect(res.sendStatus.mock.calls[0][0]).toBe(NOT_FOUND);
     });
 });

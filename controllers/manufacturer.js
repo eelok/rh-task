@@ -66,3 +66,15 @@ exports.update = async (req, res) => {
         res.sendStatus(INTERNAL_SERVER_ERROR);
     }
 };
+
+exports.findAllPhonesByManufacturerId = async (req, res) => {
+    try {
+        const phones = await Phone.findAll({where: {manufacturerId: req.params.id}});
+        if (!phones) {
+            return res.sendStatus(NOT_FOUND);
+        }
+        res.send(phones);
+    } catch (err) {
+        res.sendStatus(INTERNAL_SERVER_ERROR);
+    }
+};
