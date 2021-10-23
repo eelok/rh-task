@@ -1,5 +1,5 @@
-const {Manufacturer} = require("../models");
-const {INTERNAL_SERVER_ERROR, NOT_FOUND, BAD_REQUEST, CREATED} = require("../http-status-codes");
+const {Manufacturer, Phone} = require("../models");
+const {INTERNAL_SERVER_ERROR, NOT_FOUND, BAD_REQUEST, CREATED, OK} = require("../http-status-codes");
 
 exports.listAll = async (req, res) => {
     try {
@@ -38,6 +38,19 @@ exports.createManufacturer =  async (req, res) => {
             .status(CREATED)
             .header({Location: `/manufacturer/${manufacturer.id}`})
             .send(manufacturer);
+    } catch (err) {
+        res.sendStatus(INTERNAL_SERVER_ERROR);
+    }
+};
+
+exports.deleteById = async (req, res) => {
+    try {
+        const manufacturer = await Manufacturer.findByPk(req.params.id);
+        if (!manufacturer) {
+            return res.sendStatus(NOT_FOUND);
+        }
+        await manufacturer.destroy();
+        res.sendStatus(OK);
     } catch (err) {
         res.sendStatus(INTERNAL_SERVER_ERROR);
     }

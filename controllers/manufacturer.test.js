@@ -1,7 +1,7 @@
 const manufacturerController = require("./manufacturer");
 jest.mock("../models");
-const {Manufacturer} = require("../models");
-const {NOT_FOUND, CREATED, BAD_REQUEST} = require("../http-status-codes");
+const {Manufacturer, Phone} = require("../models");
+const {NOT_FOUND, CREATED, BAD_REQUEST, OK} = require("../http-status-codes");
 
 describe("Manufacturer Unit Tests", () => {
     test("Should call res.send with all manufacturers", async () => {
@@ -70,11 +70,23 @@ describe("Manufacturer Unit Tests", () => {
         const res = jest.fn();
         res.status = jest.fn().mockImplementation(status => res);
         res.send = jest.fn();
-
         Manufacturer.findOne.mockResolvedValue(newManufacturer);
+
         await manufacturerController.createManufacturer(req, res);
 
         expect(res.status.mock.calls[0][0]).toBe(BAD_REQUEST);
         expect(res.send.mock.calls[0][0]).toStrictEqual(`Manufacturer with name ${newManufacturer.name} already exists`);
+    });
+    test("Should send OK when manufacturer was deleted", async () => {
+        const manufacturer = {name: "testName", id: 2, destroy: jest.fn()};
+        const req = {params: {id: manufacturer.id}};
+        const res = jest.fn();
+        res.sendStatus = jest.fn().mockImplementation(sendStatus => res);
+        Manufacturer.findByPk.mockResolvedValue(manufacturer);
+        manufacturer.destroy.mockResolvedValue();
+
+        await manufacturerController.deleteById(req, res);
+
+        expect(res.sendStatus.mock.calls[0][0]).toBe(OK);
     });
 });
