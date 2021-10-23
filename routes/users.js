@@ -41,6 +41,7 @@ router.post("/login", async (req, res) => {
             res.send({authToken: Buffer.from(`${user.name}:${password}`).toString("base64")});
         });
     } catch (err) {
+        console.error(err);
         res.sendStatus(INTERNAL_SERVER_ERROR);
     }
 });
