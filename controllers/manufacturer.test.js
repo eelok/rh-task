@@ -90,4 +90,16 @@ describe("Manufacturer Unit Tests", () => {
         expect(res.sendStatus.mock.calls[0][0]).toBe(OK);
         expect(Manufacturer.findByPk.mock.calls[0][0]).toBe(manufacturer.id);
     });
+    test("Should send NOT_FOUND when no such manufacturer", async () => {
+        const manufacturer = {name: "test", id: 22};
+        const req = {params: {id: manufacturer.id}};
+        const res = jest.fn();
+        res.sendStatus = jest.fn().mockImplementation(sendStatus => res);
+        Manufacturer.findByPk.mockResolvedValue(undefined);
+
+        await manufacturerController.deleteById(req, res);
+
+        expect(res.sendStatus.mock.calls[0][0]).toBe(NOT_FOUND);
+        expect(Manufacturer.findByPk.mock.calls[0][0]).toBe(manufacturer.id);
+    });
 });
