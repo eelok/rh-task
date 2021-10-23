@@ -8,17 +8,7 @@ const manufacturerController = require('../controllers/manufacturer');
 
 router.get("/", manufacturerController.listAll);
 
-router.get("/:id", passport.authenticate("basic", {session: false}), async (req, res) => {
-    try {
-        const manufacturer = await Manufacturer.findByPk(req.params.id);
-        if (!manufacturer) {
-            return res.sendStatus(NOT_FOUND);
-        }
-        res.send(manufacturer);
-    } catch (err) {
-        res.sendStatus(INTERNAL_SERVER_ERROR);
-    }
-});
+router.get("/:id", passport.authenticate("basic", {session: false}), manufacturerController.getById);
 
 router.post("/create", passport.authenticate("basic", {session: false}), async (req, res) => {
     const {name} = req.body;
