@@ -4,15 +4,9 @@ const router = express.Router();
 const {INTERNAL_SERVER_ERROR, NOT_FOUND, BAD_REQUEST, CREATED} = require("../http-status-codes");
 const passport = require("passport");
 const { Phone, Manufacturer } = require('../models');
+const manufacturerController = require('../controllers/manufacturer');
 
-router.get("/", async (req, res) => {
-    try {
-        const manufacturers = await Manufacturer.findAll();
-        res.send(manufacturers);
-    } catch (err) {
-        res.sendStatus(INTERNAL_SERVER_ERROR);
-    }
-});
+router.get("/", manufacturerController.listAll);
 
 router.get("/:id", passport.authenticate("basic", {session: false}), async (req, res) => {
     try {
