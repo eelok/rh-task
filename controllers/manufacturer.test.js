@@ -88,5 +88,6 @@ describe("Manufacturer Unit Tests", () => {
         await manufacturerController.deleteById(req, res);
 
         expect(res.sendStatus.mock.calls[0][0]).toBe(OK);
+        expect(Manufacturer.findByPk.mock.calls[0][0]).toBe(manufacturer.id);
     });
 });
