@@ -3,6 +3,16 @@ on: [ push ]
 jobs:
   check-jsons:
     runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres
+        env:
+          POSTGRES_PASSWORD: postgres
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
 
     steps:
       - uses: actions/checkout@v2
@@ -11,6 +21,18 @@ jobs:
           node-version: '14'
           check-latest: true
       - run: npm install
-
+      - run: npm run db:migrate
+        env:
+          PG_HOST: postgres
+          PG_PORT: 5432
+          PG_DATABASE: rhtask
+          PG_USERNAME: postgres
+          PG_PASSWORD: postgres
       - name: Unit tests
         run: npm test
+        env:
+          PG_HOST: postgres
+          PG_PORT: 5432
+          PG_DATABASE: rhtask
+          PG_USERNAME: postgres
+          PG_PASSWORD: postgres
