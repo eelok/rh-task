@@ -27,8 +27,8 @@ jobs:
       - run: npm ci
       - run: npm run db:migrate
         env:
-          NODE_ENV: test
+          NODE_ENV: ci
       - name: Unit tests
         run: npm test
         env:
-          NODE_ENV: test
+          NODE_ENV: ci
