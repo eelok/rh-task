@@ -92,5 +92,6 @@ describe("Manufacturer API", () => {
 
         expect(response.body[0].name).toBe("ApplePhone");
         expect(response.body[0].quantity).toBe(15);
+        expect(response.statusCode).toBe(OK);
     });
 });
