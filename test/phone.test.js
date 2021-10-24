@@ -1,7 +1,7 @@
 const {Phone, Manufacturer, User} = require("../models");
 const request = require("supertest");
 const app = require("../app");
-const {OK, CREATED} = require("../http-status-codes");
+const {OK, CREATED, BAD_REQUEST, NOT_FOUND} = require("../http-status-codes");
 
 
 describe("Phone API", () => {
@@ -38,6 +38,12 @@ describe("Phone API", () => {
         expect(response.body.quantity).toBe(15);
         expect(response.statusCode).toBe(OK);
     });
+    test("should send status code NOT_FOUND when no phone with such id get_method", async () => {
+        const response = await request(app)
+            .get("/phone/1");
+
+        expect(response.statusCode).toBe(NOT_FOUND);
+    });
     test("should delete phone", async () => {
         await Phone.create({
             "name": "ApplePhone",
@@ -50,6 +56,13 @@ describe("Phone API", () => {
             .set({Authorization: `Basic ${token}`});
 
         expect(response.statusCode).toBe(OK);
+    });
+    test("should send status code NOT_FOUND when no phone with such id delete_method", async () => {
+        const response = await request(app)
+            .delete("/phone/1")
+            .set({Authorization: `Basic ${token}`});
+
+        expect(response.statusCode).toBe(NOT_FOUND);
     });
     test("should update phone", async () => {
         await Phone.create({
@@ -84,5 +97,18 @@ describe("Phone API", () => {
         expect(response.statusCode).toBe(CREATED);
         expect(response.body.name).toBe("iphone15");
         expect(response.body.quantity).toBe(7);
+    });
+    test("should sent BAD_REQUEST when create phone without a name", async () => {
+        await Manufacturer.create({name: "Siemens", location: "world"});
+
+        const response = await request(app)
+            .post("/phone/create/1")
+            .set({Authorization: `Basic ${token}`})
+            .send({
+                "quantity": 7,
+                "releaseDate": "2022-01-27"
+            });
+
+        expect(response.statusCode).toBe(BAD_REQUEST);
     });
 });
