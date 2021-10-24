@@ -1,9 +1,12 @@
 const express = require("express");
 const router = express.Router();
-const passport = require("passport");
-const {getPhoneById, deletePhoneById, updatePhone, createPhoneByManufacturerId} = require("../controllers/phone");
-
-const withAuth = passport.authenticate("basic", {session: false});
+const {withAuth} = require("../passport/auth");
+const {
+    getPhoneById,
+    deletePhoneById,
+    updatePhone,
+    createPhoneByManufacturerId
+} = require("../controllers/phone");
 
 module.exports = router
     .get("/:id", getPhoneById)

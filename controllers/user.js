@@ -12,10 +12,9 @@ exports.createUser = async (req, res) => {
         if (await User.findOne({where: {email}})) {
             return res.status(BAD_REQUEST).send("User is already registered");
         }
-        bcrypt.hash(password, saltRounds, async function (err, hash) {
-            await User.create({email, name, password: hash});
-            res.sendStatus(CREATED);
-        });
+        const hashedPassword = await bcrypt.hash(password, saltRounds);
+        await User.create({email, name, password: hashedPassword});
+        res.sendStatus(CREATED);
     } catch (err) {
         res.sendStatus(INTERNAL_SERVER_ERROR);
     }
@@ -32,12 +31,11 @@ exports.loginUser = async (req, res) => {
         if (!user) {
             return res.status(UNAUTHORIZED).send(unauthorizedMessage);
         }
-        bcrypt.compare(password, user.password, function (err, result) {
-            if (!result) {
-                return res.status(UNAUTHORIZED).send(unauthorizedMessage);
-            }
-            res.send({authToken: Buffer.from(`${user.name}:${password}`).toString("base64")});
-        });
+        const result = await bcrypt.compare(password, user.password);
+        if (!result) {
+            return res.status(UNAUTHORIZED).send(unauthorizedMessage);
+        }
+        res.send({authToken: Buffer.from(`${user.email}:${password}`).toString("base64")});
     } catch (err) {
         console.error(err);
         res.sendStatus(INTERNAL_SERVER_ERROR);
