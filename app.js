@@ -3,9 +3,9 @@ const app = express();
 const passport = require('passport');
 const { User } = require('./models');
 const BasicStrategy = require('passport-http').BasicStrategy;
-const manufacturersRouter = require("./routes/manufacturers");
-const phonesRouter = require("./routes/phones");
-const userRouter = require("./routes/users");
+const manufacturersRouter = require("./routes/manufacturer");
+const phonesRouter = require("./routes/phone");
+const userRouter = require("./routes/user");
 const bcrypt = require("bcrypt");
 
 app.use(express.json());
