@@ -1,7 +1,7 @@
 name: Integration Tests
 on: [ push ]
 jobs:
-  check-jsons:
+  tests:
     runs-on: ubuntu-latest
     services:
       postgres:
@@ -23,16 +23,8 @@ jobs:
       - run: npm install
       - run: npm run db:migrate
         env:
-          PG_HOST: postgres
-          PG_PORT: 5432
-          PG_DATABASE: rhtask
-          PG_USERNAME: postgres
-          PG_PASSWORD: postgres
+          NODE_ENV: test
       - name: Unit tests
         run: npm test
         env:
-          PG_HOST: postgres
-          PG_PORT: 5432
-          PG_DATABASE: rhtask
-          PG_USERNAME: postgres
-          PG_PASSWORD: postgres
+          NODE_ENV: test
