@@ -13,7 +13,7 @@ module.exports = {
         "username": "postgres",
         "password": "postgres",
         "database": "rhtask",
-        "host": "0.0.0.0",
+        "host": "postgres",
         "port": "5432",
         "logging": true,
         "dialect": "postgres"
