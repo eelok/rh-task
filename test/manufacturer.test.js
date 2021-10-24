@@ -1,4 +1,4 @@
-const {Manufacturer, User} = require("../models");
+const {Manufacturer, User, Phone} = require("../models");
 const request = require("supertest");
 const app = require("../app");
 const {OK, CREATED} = require("../http-status-codes");
@@ -7,6 +7,7 @@ describe("Manufacturer API", () => {
     let token;
     beforeEach(async () => {
         await Manufacturer.sync({force: true});
+        await Phone.sync({force: true});
         await User.sync({force: true});
         await request(app)
             .post("/user/register")
@@ -53,5 +54,43 @@ describe("Manufacturer API", () => {
         expect(response.body.name).toBe("LG");
         expect(response.body.location).toBe("world");
         expect(response.header.location).toBe("/manufacturer/1");
+    });
+    test("should delete manufacturer", async () => {
+        await Manufacturer.create({name: "apple", location: "world"});
+
+        const response = await request(app)
+            .delete("/manufacturer/1")
+            .set({Authorization: `Basic ${token}`});
+
+        expect(response.statusCode).toBe(OK);
+    });
+    test("should update manufacturer", async () => {
+        await Manufacturer.create({name: "apple", location: "earth"});
+
+        const response = await request(app)
+            .put("/manufacturer/1")
+            .set({Authorization: `Basic ${token}`})
+            .send({
+                "id": "1",
+                "name": "apple001",
+            });
+
+        expect(response.body.name).toBe("apple001");
+        expect(response.body.location).toBe("earth");
+        expect(response.statusCode).toBe(OK);
+    });
+    test("should find all phones by manufacturer's id", async () => {
+        await Manufacturer.create({name: "apple", location: "earth"});
+        await Phone.create({
+            "manufacturerId": 1,
+            "name": "ApplePhone",
+            "quantity": 15,
+            "releaseDate": "2019-01-27"
+        });
+
+        const response = await request(app).get("/manufacturer/1/phones");
+
+        expect(response.body[0].name).toBe("ApplePhone");
+        expect(response.body[0].quantity).toBe(15);
     });
 });
