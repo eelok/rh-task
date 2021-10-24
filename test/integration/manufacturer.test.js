@@ -1,7 +1,7 @@
-const {Manufacturer, User, Phone} = require("../models");
+const {Manufacturer, User, Phone} = require("../../models");
 const request = require("supertest");
-const app = require("../app");
-const {OK, CREATED} = require("../http-status-codes");
+const app = require("../../app");
+const {OK, CREATED} = require("../../http-status-codes");
 const {login} = require("./login");
 
 describe("Manufacturer API", () => {

@@ -1,7 +1,7 @@
-const app = require("../app");
+const app = require("../../app");
 const request = require("supertest");
-const {User} = require("../models");
-const {CREATED, OK, UNAUTHORIZED} = require("../http-status-codes");
+const {User} = require("../../models");
+const {CREATED, OK, UNAUTHORIZED} = require("../../http-status-codes");
 
 describe("User register", () => {
     beforeEach(async () => {

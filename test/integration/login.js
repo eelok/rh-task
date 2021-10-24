@@ -1,5 +1,5 @@
 const request = require("supertest");
-const app = require("../app");
+const app = require("../../app");
 
 exports.login = async () => {
     const response = await request(app)

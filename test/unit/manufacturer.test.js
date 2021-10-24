@@ -1,7 +1,7 @@
-const manufacturerController = require("./manufacturer");
-jest.mock("../models");
-const {Manufacturer, Phone} = require("../models");
-const {NOT_FOUND, CREATED, BAD_REQUEST, OK} = require("../http-status-codes");
+const manufacturerController = require("../../controllers/manufacturer");
+jest.mock("../../models");
+const {Manufacturer, Phone} = require("../../models");
+const {NOT_FOUND, CREATED, BAD_REQUEST, OK} = require("../../http-status-codes");
 
 describe("Manufacturer Unit Tests", () => {
     beforeEach(() => {

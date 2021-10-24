@@ -1,7 +1,7 @@
-const {Phone, Manufacturer, User} = require("../models");
+const {Phone, Manufacturer, User} = require("../../models");
 const request = require("supertest");
-const app = require("../app");
-const {OK, CREATED, BAD_REQUEST, NOT_FOUND} = require("../http-status-codes");
+const app = require("../../app");
+const {OK, CREATED, BAD_REQUEST, NOT_FOUND} = require("../../http-status-codes");
 const {login} = require("./login");
 
 
