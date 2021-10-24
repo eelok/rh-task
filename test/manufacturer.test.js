@@ -2,6 +2,7 @@ const {Manufacturer, User, Phone} = require("../models");
 const request = require("supertest");
 const app = require("../app");
 const {OK, CREATED} = require("../http-status-codes");
+const {login} = require("./login");
 
 describe("Manufacturer API", () => {
     let token;
@@ -16,13 +17,6 @@ describe("Manufacturer API", () => {
                 "name": "Olga",
                 "password": "test55testww"
             });
-        const response = await request(app)
-            .post("/user/login")
-            .send({
-                "email": "ben2@gmail.com",
-                "password": "test55testww"
-            });
-        token = response.body.authToken;
     });
     test("should get all manufacturers", async () => {
         await Manufacturer.create({name: "apple", location: "world"});
@@ -34,6 +28,7 @@ describe("Manufacturer API", () => {
         expect(response.body[0].location).toBe("world");
     });
     test("should get manufacturer by id", async () => {
+        const token = await login();
         await Manufacturer.create({name: "apple", location: "world"});
 
         const response = await request(app).get("/manufacturer/1").set({Authorization: `Basic ${token}`});
@@ -43,6 +38,7 @@ describe("Manufacturer API", () => {
         expect(response.body.location).toBe("world");
     });
     test("should create a new manufacturer", async () => {
+        const token = await login();
         const response = await request(app).post("/manufacturer/create")
             .set({Authorization: `Basic ${token}`})
             .send({
@@ -56,6 +52,7 @@ describe("Manufacturer API", () => {
         expect(response.header.location).toBe("/manufacturer/1");
     });
     test("should delete manufacturer", async () => {
+        const token = await login();
         await Manufacturer.create({name: "apple", location: "world"});
 
         const response = await request(app)
@@ -65,6 +62,7 @@ describe("Manufacturer API", () => {
         expect(response.statusCode).toBe(OK);
     });
     test("should update manufacturer", async () => {
+        const token = await login();
         await Manufacturer.create({name: "apple", location: "earth"});
 
         const response = await request(app)

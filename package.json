@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node ./server.js",
-    "test": "jest",
+    "test": "jest -i --detectOpenHandles",
     "db:migrate": "npx sequelize-cli db:migrate"
   },
   "keywords": [],
