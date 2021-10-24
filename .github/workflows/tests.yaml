@@ -20,7 +20,7 @@ jobs:
         with:
           node-version: '14'
           check-latest: true
-      - run: npm install
+      - run: npm ci
       - run: npm run db:migrate
         env:
           NODE_ENV: test
