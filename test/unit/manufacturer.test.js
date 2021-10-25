@@ -1,7 +1,8 @@
 const manufacturerController = require("../../controllers/manufacturer");
-jest.mock("../../models");
 const {Manufacturer, Phone} = require("../../models");
 const {NOT_FOUND, CREATED, BAD_REQUEST, OK} = require("../../http-status-codes");
+
+jest.mock("../../models");
 
 describe("Manufacturer Unit Tests", () => {
     beforeEach(() => {
@@ -123,9 +124,7 @@ describe("Manufacturer Unit Tests", () => {
     });
     test("Should return res.send with all phones according to manufacturer id", async () => {
         const manufacturer = {name: "test", id: 22};
-        const req = {
-            params: {id: manufacturer.id},
-        };
+        const req = {params: {id: manufacturer.id}};
         const res = jest.fn();
         res.send = jest.fn();
 
@@ -138,14 +137,10 @@ describe("Manufacturer Unit Tests", () => {
     });
     test("Should return NOT_FOUND manufacturer doesn't have any phones", async () => {
         const manufacturer = {name: "test", id: 22};
-        const req = {
-            params: {id: manufacturer.id},
-        };
+        const req = {params: {id: manufacturer.id}};
         const res = jest.fn();
         res.sendStatus = jest.fn();
-
-        const phones = undefined;
-        Phone.findAll.mockResolvedValue(phones);
+        Phone.findAll.mockResolvedValue(undefined);
 
         await manufacturerController.findAllPhonesByManufacturerId(req, res);
 

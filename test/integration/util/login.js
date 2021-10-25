@@ -1,5 +1,5 @@
 const request = require("supertest");
-const app = require("../../app");
+const app = require("../../../app");
 
 exports.login = async () => {
     const response = await request(app)
@@ -9,4 +9,14 @@ exports.login = async () => {
             "password": "test55testww"
         });
     return response.body.authToken;
+}
+
+exports.registerNewUser = async () => {
+    await request(app)
+        .post("/user/register")
+        .send({
+            "email": "ben2@gmail.com",
+            "name": "Olga",
+            "password": "test55testww"
+        });
 }

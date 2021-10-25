@@ -1,28 +1,15 @@
-const {Phone, Manufacturer, User} = require("../../models");
+const {Phone, Manufacturer} = require("../../models");
 const request = require("supertest");
 const app = require("../../app");
 const {OK, CREATED, BAD_REQUEST, NOT_FOUND} = require("../../http-status-codes");
-const {login} = require("./login");
-
-
-
-
-beforeEach(async () => {
-    await Phone.sync({force: true});
-    await User.sync({force: true});
-    await Manufacturer.sync({force: true});
-    await request(app)
-        .post("/user/register")
-        .send({
-            "email": "ben2@gmail.com",
-            "name": "Olga",
-            "password": "test55testww"
-        });
-});
-
+const {login, registerNewUser} = require("./util/login");
+const {cleanDB} = require("./util/db");
 
 describe("Phone API", () => {
-
+    beforeEach(async () => {
+        await cleanDB();
+        await registerNewUser();
+    });
     test("should get phone by id", async () => {
         await Phone.create({
             "name": "ApplePhone",
@@ -36,9 +23,8 @@ describe("Phone API", () => {
         expect(response.body.quantity).toBe(15);
         expect(response.statusCode).toBe(OK);
     });
-    test("should send status code NOT_FOUND when no phone with such id get_method", async () => {
-        const response = await request(app)
-            .get("/phone/1");
+    test("should send NOT_FOUND when no phone found", async () => {
+        const response = await request(app).get("/phone/1");
 
         expect(response.statusCode).toBe(NOT_FOUND);
     });
@@ -56,7 +42,7 @@ describe("Phone API", () => {
 
         expect(response.statusCode).toBe(OK);
     });
-    test("should send status code NOT_FOUND when no phone with such id delete_method", async () => {
+    test("should send NOT_FOUND when deleting not existing phone", async () => {
         const token = await login();
         
         const response = await request(app)
@@ -65,7 +51,7 @@ describe("Phone API", () => {
 
         expect(response.statusCode).toBe(NOT_FOUND);
     });
-    test("should update phone", async () => {
+    test("should update a phone", async () => {
         await Phone.create({
             "name": "ApplePhone",
             "quantity": 15,
@@ -84,12 +70,19 @@ describe("Phone API", () => {
         expect(response.body.name).toBe("ApplePhoneUpdated");
         expect(response.body.quantity).toBe(15);
     });
-    test("should create phone by manufacturer's id", async () => {
+});
+describe("Create Phone for manufacturer API", () => {
+    beforeEach(async () => {
+        await cleanDB();
+        await registerNewUser();
+    });
+    test("should create a phone by manufacturerId", async () => {
         const token = await login();
         await Manufacturer.create({name: "Siemens", location: "world"});
+        const manufacturerId = 1;
 
         const response = await request(app)
-            .post("/phone/create/1")
+            .post(`/phone/create/${manufacturerId}`)
             .set({Authorization: `Basic ${token}`})
             .send({
                 "name": "iphone15",
@@ -99,9 +92,10 @@ describe("Phone API", () => {
 
         expect(response.statusCode).toBe(CREATED);
         expect(response.body.name).toBe("iphone15");
+        expect(response.body.manufacturerId).toBe(manufacturerId);
         expect(response.body.quantity).toBe(7);
     });
-    test("should sent BAD_REQUEST when create phone without a name", async () => {
+    test("should send BAD_REQUEST when phone has no name", async () => {
         const token = await login();
         await Manufacturer.create({name: "Siemens", location: "world"});
 
@@ -115,21 +109,7 @@ describe("Phone API", () => {
 
         expect(response.statusCode).toBe(BAD_REQUEST);
     });
-    test("should sent BAD_REQUEST when create phone without a releaseDate", async () => {
-        const token = await login();
-        await Manufacturer.create({name: "Siemens", location: "world"});
-
-        const response = await request(app)
-            .post("/phone/create/1")
-            .set({Authorization: `Basic ${token}`})
-            .send({
-                "name": "ApplePhone",
-                "quantity": 7,
-            });
-
-        expect(response.statusCode).toBe(BAD_REQUEST);
-    });
-    test("should sent BAD_REQUEST when phone with such name is already exists", async () => {
+    test("should send BAD_REQUEST when phone already exists", async () => {
         const token = await login();
         await Manufacturer.create({name: "Siemens", location: "world"});
         await Phone.create({
@@ -149,8 +129,9 @@ describe("Phone API", () => {
 
         expect(response.statusCode).toBe(BAD_REQUEST);
     });
-    test("should sent NOT_FOUND when create phone and manufacturer doesn't exists", async () => {
+    test("should send NOT_FOUND when no such manufacturer", async () => {
         const token = await login();
+
         const response = await request(app)
             .post("/phone/create/222")
             .set({Authorization: `Basic ${token}`})

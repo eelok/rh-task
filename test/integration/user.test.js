@@ -2,6 +2,7 @@ const app = require("../../app");
 const request = require("supertest");
 const {User} = require("../../models");
 const {CREATED, OK, UNAUTHORIZED} = require("../../http-status-codes");
+const {registerNewUser} = require("./util/login");
 
 describe("User register", () => {
     beforeEach(async () => {
@@ -22,13 +23,7 @@ describe("User register", () => {
 describe("User login", () => {
     beforeEach(async () => {
         await User.sync({force: true});
-        await request(app)
-            .post("/user/register")
-            .send({
-                "email": "ben2@gmail.com",
-                "name": "Olga",
-                "password": "test55testww"
-            });
+        await registerNewUser();
     });
     test("should login user", async () => {
         const response = await request(app)
