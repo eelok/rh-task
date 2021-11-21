@@ -22,6 +22,8 @@ const schema = buildSchema(`
     type Mutation {
         createUser(user: UserInput): User
         createManufacturer(manufacturer: ManufacturerInput): Manufacturer
+        deleteManufacturer(id: Int!): Boolean
+        updateManufacturer(id: Int!, manufacturer: ManufacturerInput): Manufacturer
     }
     type Query {
         user(id: Int!): User,
