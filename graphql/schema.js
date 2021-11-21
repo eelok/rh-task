@@ -1,10 +1,14 @@
 const { buildSchema } = require('graphql');
 
 const schema = buildSchema(`
-    type Manufacturer {
+    input ManufacturerInput{
         name: String,
         location: String
     }
+    type Manufacturer {
+        name: String,
+        location: String
+    } 
     input UserInput {
         email: String,
         name: String,
@@ -17,6 +21,7 @@ const schema = buildSchema(`
     }
     type Mutation {
         createUser(user: UserInput): User
+        createManufacturer(manufacturer: ManufacturerInput): Manufacturer
     }
     type Query {
         user(id: Int!): User,
