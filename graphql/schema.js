@@ -9,6 +9,12 @@ const schema = buildSchema(`
         name: String,
         location: String
     } 
+    input PhoneInput {
+        name: String,
+        quantity: Int,
+        releaseDate: String,
+        manufacturerId: Int
+    }
     type Phone {
         name: String,
         quantity: Int,
@@ -29,6 +35,7 @@ const schema = buildSchema(`
         createManufacturer(manufacturer: ManufacturerInput): Manufacturer
         deleteManufacturer(id: Int!): Boolean
         updateManufacturer(id: Int!, manufacturer: ManufacturerInput): Manufacturer
+        createPhone(manufacturerId: Int!, phone: PhoneInput): Phone
         deletePhone(id: Int!): Boolean
     }
     type Query {

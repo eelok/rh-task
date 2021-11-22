@@ -1,7 +1,7 @@
 const { User} = require("../models");
 const { createUser } = require("./resolvers/user.resolver");
 const { getManufacturerById, listAll, createManufacturer, deleteById, updateManufacturer } = require("./resolvers/manufacturer.resolver");
-const { getPhoneById, deletePhoneById } = require("./resolvers/phone.resolver");
+const { getPhoneById, deletePhoneById, updatePhone, createPhoneByManufacturerId } = require("./resolvers/phone.resolver");
 
 
 const rootResolver = { // Query
@@ -14,7 +14,9 @@ const rootResolver = { // Query
     deleteManufacturer: deleteById,
     updateManufacturer: updateManufacturer,
     phone: getPhoneById,
-    deletePhone: deletePhoneById
+    createPhone: createPhoneByManufacturerId,
+    deletePhone: deletePhoneById,
+    // updatePhone: updatePhone
 };
 
 module.exports = { rootResolver };
