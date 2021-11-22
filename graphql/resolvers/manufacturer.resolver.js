@@ -40,7 +40,7 @@ const deleteById = async ({ id }) => {
 
 const updateManufacturer = async ({id, manufacturer}) => {    
     const manufacturerDB = await Manufacturer.findByPk(id);
-    const updatedManufacturer = await manufacturerDB.update(manufacturer);
-    return updatedManufacturer;
-}
+    return await manufacturerDB.update(manufacturer);
+};
+
 module.exports = { getManufacturerById, listAll, createManufacturer, deleteById, updateManufacturer: updateManufacturer };

@@ -9,6 +9,11 @@ const schema = buildSchema(`
         name: String,
         location: String
     } 
+    type Phone {
+        name: String,
+        quantity: Int,
+        releaseDate: String,
+    }
     input UserInput {
         email: String,
         name: String,
@@ -24,12 +29,14 @@ const schema = buildSchema(`
         createManufacturer(manufacturer: ManufacturerInput): Manufacturer
         deleteManufacturer(id: Int!): Boolean
         updateManufacturer(id: Int!, manufacturer: ManufacturerInput): Manufacturer
+        deletePhone(id: Int!): Boolean
     }
     type Query {
         user(id: Int!): User,
         users: [User],
         manufacturer(id: Int!): Manufacturer,
-        manufacturers: [Manufacturer]
+        manufacturers: [Manufacturer],
+        phone(id: Int!): Phone
     }
 `);
 
