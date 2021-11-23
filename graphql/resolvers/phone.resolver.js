@@ -40,8 +40,7 @@ const deletePhoneById = async ({ id }) => {
 const updatePhone = async({id, phone}) => {
     const { name, quantity, releaseDate } = phone;
     const phoneDB = await Phone.findByPk(id);
-    const updatedPhone = await phoneDB.update({ name, quantity, releaseDate });
-    return updatePhone;
+    return await phoneDB.update({ name, quantity, releaseDate });
 };
 
 module.exports = { getPhoneById, deletePhoneById, createPhoneByManufacturerId, updatePhone};
