@@ -1,12 +1,12 @@
 const { User} = require("../models");
-const { createUser } = require("./resolvers/user.resolver");
+const { createUser, findAllUser } = require("./resolvers/user.resolver");
 const { getManufacturerById, listAll, createManufacturer, deleteById, updateManufacturer, findAllPhonesByManufacturerId } = require("./resolvers/manufacturer.resolver");
 const { getPhoneById, deletePhoneById, updatePhone, createPhoneByManufacturerId } = require("./resolvers/phone.resolver");
 
 
 const rootResolver = { // Query
     user: ({ email, password }) => User.findOne({ where: { email } }),
-    users: () => User.findAll(),
+    users: findAllUser,
     createUser: createUser,
     manufacturers: listAll,
     manufacturer: getManufacturerById,
