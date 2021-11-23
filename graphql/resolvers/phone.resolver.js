@@ -37,11 +37,11 @@ const deletePhoneById = async ({ id }) => {
     return false;
 };
 
-// const updatePhone = async({id, phone}) => {
-//     const { name, quantity, releaseDate } = phone;
-//     const phone = await Phone.findByPk(id);
-//     const updatedPhone = await phone.update({ name, quantity, releaseDate });
-//     res.send(updatedPhone);
-// };
+const updatePhone = async({id, phone}) => {
+    const { name, quantity, releaseDate } = phone;
+    const phoneDB = await Phone.findByPk(id);
+    const updatedPhone = await phoneDB.update({ name, quantity, releaseDate });
+    return updatePhone;
+};
 
-module.exports = { getPhoneById, deletePhoneById, createPhoneByManufacturerId};
+module.exports = { getPhoneById, deletePhoneById, createPhoneByManufacturerId, updatePhone};

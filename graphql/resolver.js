@@ -16,7 +16,7 @@ const rootResolver = { // Query
     phone: getPhoneById,
     createPhone: createPhoneByManufacturerId,
     deletePhone: deletePhoneById,
-    // updatePhone: updatePhone
+    updatePhone: updatePhone
 };
 
 module.exports = { rootResolver };

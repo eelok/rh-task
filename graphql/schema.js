@@ -37,6 +37,7 @@ const schema = buildSchema(`
         updateManufacturer(id: Int!, manufacturer: ManufacturerInput): Manufacturer
         createPhone(manufacturerId: Int!, phone: PhoneInput): Phone
         deletePhone(id: Int!): Boolean
+        updatePhone(id: Int!, phone: PhoneInput): Phone
     }
     type Query {
         user(id: Int!): User,
