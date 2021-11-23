@@ -45,6 +45,7 @@ const schema = buildSchema(`
         manufacturer(id: Int!): Manufacturer,
         manufacturers: [Manufacturer],
         phone(id: Int!): Phone
+        findAllPhonesByManufacturerId(manufacturerId: Int!): [Phone]
     }
 `);
 

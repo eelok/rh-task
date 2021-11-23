@@ -1,4 +1,4 @@
-const { Manufacturer } = require("../../models");
+const { Manufacturer, Phone } = require("../../models");
 
 const getManufacturerById = async ({ id }) => {
     const manufacturer = await Manufacturer.findByPk(id);
@@ -38,9 +38,17 @@ const deleteById = async ({ id }) => {
     return false;
 };
 
-const updateManufacturer = async ({id, manufacturer}) => {    
+const updateManufacturer = async ({ id, manufacturer }) => {
     const manufacturerDB = await Manufacturer.findByPk(id);
     return await manufacturerDB.update(manufacturer);
 };
+///todo ?? не найдет мануфактурер или просто у него нет телефонов
+const findAllPhonesByManufacturerId = async ({ manufacturerId }) => {
+    const phones = await Phone.findAll({ where: { manufacturerId: manufacturerId } });
+    if (!phones.length) {
+        throw new Error("not found")
+    }
+    return phones;
+};
 
-module.exports = { getManufacturerById, listAll, createManufacturer, deleteById, updateManufacturer: updateManufacturer };
+module.exports = { getManufacturerById, listAll, createManufacturer, deleteById, updateManufacturer: updateManufacturer, findAllPhonesByManufacturerId };
