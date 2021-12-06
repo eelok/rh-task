@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node ./server.js",
-    "dev001": "node ./app.js",
+    "dev001": "nodemon ./app.js",
     "dev": "nodemon ./server.js",
     "test": "jest --testPathPattern=test/unit",
     "test:integration": "jest -i --testPathPattern=test/integration --detectOpenHandles",
@@ -23,6 +23,7 @@
     "express-graphql": "^0.12.0",
     "graphql": "^15.7.2",
     "jest": "^27.3.1",
+    "nodemon": "^2.0.15",
     "passport": "^0.5.0",
     "passport-http": "^0.3.0",
     "pg": "^8.7.1",

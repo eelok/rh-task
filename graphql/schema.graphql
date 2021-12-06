@@ -1,30 +1,25 @@
-input ManufacturerInput{
-    name: String,
-    location: String
+type Query {
+    manufacturers: [Manufacturer]
 }
+
 type Manufacturer {
+    id: ID!
     name: String,
     location: String
 } 
-input UserInput {
-    email: String,
+
+type Phone{
+    id: ID!
     name: String,
-    password: String
+    quantity: Int
+    releaseDate: String
 }
-type User {
-    email: String,
-    name: String,
-    password: String
-}
-type Mutation {
-    createUser(user: UserInput): User
+
+type Mutation{
     createManufacturer(manufacturer: ManufacturerInput): Manufacturer
-    deleteManufacturer(id: Int!): Boolean
-    updateManufacturer(id: Int!, manufacturer: ManufacturerInput): Manufacturer
 }
-type Query {
-    user(id: Int!): User,
-    users: [User],
-    manufacturer(id: Int!): Manufacturer,
-    manufacturers: [Manufacturer]
+
+input ManufacturerInput {
+    name: String,
+    location: String
 }
