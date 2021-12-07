@@ -1,22 +1,25 @@
 type Query {
-    manufacturers: [Manufacturer]
+    manufacturerList: [Manufacturer]
+    manufacturer(id: ID!): Manufacturer   
 }
 
 type Manufacturer {
     id: ID!
-    name: String,
+    name: String
     location: String
 } 
 
 type Phone{
     id: ID!
-    name: String,
+    name: String
     quantity: Int
     releaseDate: String
 }
 
 type Mutation{
     createManufacturer(manufacturer: ManufacturerInput): Manufacturer
+    updateManufacturer(id: ID!, manufacturer: ManufacturerInput): Manufacturer
+
 }
 
 input ManufacturerInput {
