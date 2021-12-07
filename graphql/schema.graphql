@@ -4,6 +4,12 @@ type Query {
     getPhoneById(id: ID!): Phone
 }
 
+type User {
+    name: String
+    email: String
+    password: String
+}
+
 type Manufacturer {
     id: ID!
     name: String
@@ -24,6 +30,7 @@ type Mutation{
     createPhone(manufacturerId: ID!, phone: PhoneInput): Phone
     updatePhone(id: ID!, phone: PhoneInput): Phone
     deletePhone(id: ID!): Boolean
+    createUser(user: UserInput): User
 }
 
 input ManufacturerInput {
@@ -35,4 +42,11 @@ input PhoneInput {
     name: String
     quantity: Int
     releaseDate: String
+}
+
+
+input UserInput {
+    name: String
+    email: String
+    password: String
 }

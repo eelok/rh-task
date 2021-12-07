@@ -1,5 +1,5 @@
 const { Manufacturer, Phone } = require("../models");
-//должно ли это называться как в chema.????
+
 const Query = {
     manufacturerList: async () => {
         const manufacturersList = await Manufacturer.findAll();
