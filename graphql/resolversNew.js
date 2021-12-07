@@ -68,6 +68,11 @@ const Mutation = {
             throw Error(`Phone with name ${name} already exists`);
         }
         return await manufacturer.createPhone({ name, quantity, releaseDate, manufacturerId });
+    },
+    updatePhone: async (root, { id, phone }) => {
+        const phoneDB = await Phone.findByPk(id);
+        const { name, quantity, releaseDate } = phone;
+        return await phoneDB.update({ name, quantity, releaseDate });
     }
 };
 
