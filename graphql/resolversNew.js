@@ -1,4 +1,17 @@
 const { Manufacturer } = require("../models");
+//должно ли это называться как в chema.????
+const Query = {
+    manufacturers: async () => {
+        const manufacturersList = await Manufacturer.findAll();
+        console.log(manufacturersList);
+        if (!manufacturersList) {
+            throw new Error("not found");
+        }
+        return manufacturersList;
+    }
+};
+
+
 
 const Mutation = {
     createManufacturer: async (root, { manufacturer }) => {
@@ -16,5 +29,4 @@ const Mutation = {
 
 
 
-
-module.exports = { Mutation }
+module.exports = { Mutation, Query }
