@@ -20,9 +20,16 @@ type Mutation{
     createManufacturer(manufacturer: ManufacturerInput): Manufacturer
     updateManufacturer(id: ID!, manufacturer: ManufacturerInput): Manufacturer
     deleteManufacturer(id: ID!): Boolean
+    createPhone(manufacturerId: ID!, phone: PhoneInput): Phone
 }
 
 input ManufacturerInput {
-    name: String,
+    name: String
     location: String
+}
+
+input PhoneInput {
+    name: String
+    quantity: Int
+    releaseDate: String
 }

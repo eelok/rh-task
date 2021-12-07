@@ -1,4 +1,4 @@
-const { Manufacturer } = require("../models");
+const { Manufacturer, Phone } = require("../models");
 //должно ли это называться как в chema.????
 const Query = {
     manufacturerList: async () => {
@@ -44,6 +44,23 @@ const Mutation = {
             return true;
         }
         return false;
+    },
+    createPhone: async (root, { manufacturerId, phone }) => {
+        const { name, quantity, releaseDate } = phone;
+        const manufacturer = await Manufacturer.findByPk(manufacturerId);
+        if (!manufacturer) {
+            throw Error(`Manufacturer with id ${manufacturerId} doesn't exists`);
+        }
+        if (!name || !name.trim()) {
+            throw Error("name is required")
+        }
+        if (!releaseDate || !releaseDate.trim()) {
+            throw Error("released date can't be empty")
+        }
+        if (await Phone.findOne({ where: { name: name } })) {
+            throw Error(`Phone with name ${name} already exists`);
+        }
+        return await manufacturer.createPhone({ name, quantity, releaseDate, manufacturerId });
     }
 };
 
