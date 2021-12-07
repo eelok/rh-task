@@ -1,5 +1,5 @@
 type Query {
-    manufacturerList: [Manufacturer]
+    manufacturersList: [Manufacturer]
     manufacturer(id: ID!): Manufacturer   
 }
 
