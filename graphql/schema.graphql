@@ -22,7 +22,8 @@ type Mutation{
     updateManufacturer(id: ID!, manufacturer: ManufacturerInput): Manufacturer
     deleteManufacturer(id: ID!): Boolean
     createPhone(manufacturerId: ID!, phone: PhoneInput): Phone
-    updatePhone(id: ID, phone: PhoneInput): Phone
+    updatePhone(id: ID!, phone: PhoneInput): Phone
+    deletePhone(id: ID!): Boolean
 }
 
 input ManufacturerInput {

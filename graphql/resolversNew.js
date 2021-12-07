@@ -73,6 +73,16 @@ const Mutation = {
         const phoneDB = await Phone.findByPk(id);
         const { name, quantity, releaseDate } = phone;
         return await phoneDB.update({ name, quantity, releaseDate });
+    },
+    deletePhone: async (root, { id }) => {
+        const phone = await Phone.findByPk(id);
+        if (!phone) {
+            throw new Error(`Phone with ${id} was not found`)
+        }
+        if (await phone.destroy()) {
+            return true;
+        }
+        return false;
     }
 };
 
