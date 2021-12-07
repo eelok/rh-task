@@ -30,24 +30,21 @@ const Mutation = {
         }
         return await Manufacturer.create(manufacturer);
     },
-    updateManufacturer: async(root, {id, manufacturer }) => {
-        const {name, location} = manufacturer;
+    updateManufacturer: async (root, { id, manufacturer }) => {
+        const { name, location } = manufacturer;
         const manufacturerDB = await Manufacturer.findByPk(id);
         const updatedManufacturer = await manufacturerDB.update({ name, location });
         return updatedManufacturer;
+    },
+    deleteManufacturer: async (root, { id }) => {
+        const manufacturerDB = await Manufacturer.findByPk(id);
+        if (!manufacturerDB) {
+            throw new Error(`manufacturer with id: ${id} is not found`);
+        } if (await manufacturerDB.destroy()) {
+            return true;
+        }
+        return false;
     }
 };
 
-
-
-// exports.update = async (req, res) => {
-//     try {
-//         const {name, location} = req.body;
-//         const manufacturer = await Manufacturer.findByPk(req.params.id);
-//         const updatedManufacturer = await manufacturer.update({name, location});
-//         res.send(updatedManufacturer);
-//     } catch (err) {
-//         res.sendStatus(INTERNAL_SERVER_ERROR);
-//     }
-// };
 module.exports = { Mutation, Query }

@@ -1,5 +1,5 @@
 type Query {
-    manufacturersList: [Manufacturer]
+    manufacturerList: [Manufacturer]
     manufacturer(id: ID!): Manufacturer   
 }
 
@@ -19,7 +19,7 @@ type Phone{
 type Mutation{
     createManufacturer(manufacturer: ManufacturerInput): Manufacturer
     updateManufacturer(id: ID!, manufacturer: ManufacturerInput): Manufacturer
-
+    deleteManufacturer(id: ID!): Boolean
 }
 
 input ManufacturerInput {
