@@ -44,7 +44,6 @@ input PhoneInput {
     releaseDate: String
 }
 
-
 input UserInput {
     name: String
     email: String
