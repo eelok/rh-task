@@ -9,12 +9,19 @@ const Query = {
         }
         return manufacturersList;
     },
-    manufacturer: async (root, args) => {
+    getManufacturerById: async (root, args) => {
         const manufacturerDB = await Manufacturer.findByPk(args.id);
         if (!manufacturerDB) {
             throw new Error(`manufacturer with id: ${args.id} is not found`);
         }
         return manufacturerDB;
+    },
+    getPhoneById: async (root, { id }) => {
+        const phone = await Phone.findByPk(id);
+        if (!phone) {
+            throw new Error(`Phone with ${id} was not found`);
+        }
+        return phone;
     }
 };
 

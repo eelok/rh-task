@@ -1,6 +1,7 @@
 type Query {
     manufacturerList: [Manufacturer]
-    manufacturer(id: ID!): Manufacturer   
+    getManufacturerById(id: ID!): Manufacturer   
+    getPhoneById(id: ID!): Phone
 }
 
 type Manufacturer {
