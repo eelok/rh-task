@@ -28,16 +28,19 @@ const Query = {
 };
 
 const Mutation = {
-    createManufacturer: async (root, { manufacturer }) => {
-        const { name, location } = manufacturer;
-        console.log(name, location);
-        if (!name || !name.trim()) {
-            throw new Error("manufacturer name is required");
-        }
-        if (await Manufacturer.findOne({ where: { name: name } })) {
-            throw new Error(`Manufacturer with name ${name} already exists`);
-        }
-        return await Manufacturer.create(manufacturer);
+    createManufacturer: async (root, { manufacturer }, context) => {
+        // check user auth
+        console.log("context", context);
+        // const { name, location } = manufacturer;
+        // console.log(name, location);
+        // if (!name || !name.trim()) {
+        //     throw new Error("manufacturer name is required");
+        // }
+        // if (await Manufacturer.findOne({ where: { name: name } })) {
+        //     throw new Error(`Manufacturer with name ${name} already exists`);
+        // }
+        // return await Manufacturer.create(manufacturer);
+        return null;
     },
     updateManufacturer: async (root, { id, manufacturer }) => {
         const { name, location } = manufacturer;
