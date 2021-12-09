@@ -25,7 +25,11 @@ app.use("/phone", phonesRouter);
 app.use("/user", userRouter);
 
 const typeDefs = gql(fs.readFileSync("./graphql/schema.graphql", { encoding: "utf8" }));
-const server = new ApolloServer({ typeDefs, resolvers: resolversNew, context: validateUser});
+const server = new ApolloServer(
+  { typeDefs,
+    resolvers: resolversNew, 
+    context: validateUser
+  });
 
 server.start().then((res) => {
   server.applyMiddleware({ app });

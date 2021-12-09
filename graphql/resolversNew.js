@@ -1,6 +1,12 @@
 const { Manufacturer, Phone, User } = require("../models");
 const bcrypt = require("bcrypt");
 const saltRounds = 10;
+//todo 1 
+function notAuthenticatedUser(user) {
+    if (!user) {
+        throw new Error(`user is not authenticated`);
+    }
+}
 
 const Query = {
     manufacturerList: async () => {
@@ -11,7 +17,8 @@ const Query = {
         }
         return manufacturersList;
     },
-    getManufacturerById: async (root, args) => {
+    getManufacturerById: async (root, args, context) => {
+        notAuthenticatedUser(context.user);
         const manufacturerDB = await Manufacturer.findByPk(args.id);
         if (!manufacturerDB) {
             throw new Error(`manufacturer with id: ${args.id} is not found`);
@@ -28,27 +35,29 @@ const Query = {
 };
 
 const Mutation = {
-    createManufacturer: async (root, { manufacturer }, context) => {
-        // check user auth
-        console.log("context", context);
-        // const { name, location } = manufacturer;
-        // console.log(name, location);
-        // if (!name || !name.trim()) {
-        //     throw new Error("manufacturer name is required");
-        // }
-        // if (await Manufacturer.findOne({ where: { name: name } })) {
-        //     throw new Error(`Manufacturer with name ${name} already exists`);
-        // }
-        // return await Manufacturer.create(manufacturer);
-        return null;
+    createManufacturer: async (root, { manufacturer }, user) => {
+        notAuthenticatedUser(user);
+        const { name, location } = manufacturer;
+        console.log(name, location);
+        if (!name || !name.trim()) {
+            throw new Error("manufacturer name is required");
+        }
+        if (await Manufacturer.findOne({ where: { name: name } })) {
+            throw new Error(`Manufacturer with name ${name} already exists`);
+        }
+        return await Manufacturer.create(manufacturer);
+
+
     },
-    updateManufacturer: async (root, { id, manufacturer }) => {
+    updateManufacturer: async (root, { id, manufacturer }, {user}) => {
+        notAuthenticatedUser(user);
         const { name, location } = manufacturer;
         const manufacturerDB = await Manufacturer.findByPk(id);
         const updatedManufacturer = await manufacturerDB.update({ name, location });
         return updatedManufacturer;
     },
-    deleteManufacturer: async (root, { id }) => {
+    deleteManufacturer: async (root, { id }, user) => {
+        notAuthenticatedUser(user);
         const manufacturerDB = await Manufacturer.findByPk(id);
         if (!manufacturerDB) {
             throw new Error(`manufacturer with id: ${id} is not found`);
