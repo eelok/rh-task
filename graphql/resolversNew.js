@@ -32,6 +32,9 @@ const Query = {
             throw new Error(`Phone with ${id} was not found`);
         }
         return phone;
+    },
+    loginUser: () => {
+        
     }
 };
 
