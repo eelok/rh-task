@@ -33,9 +33,21 @@ const Query = {
         }
         return phone;
     },
-    loginUser: () => {
-        
-    }
+    loginUser: async (root, {email, password}) => {
+        const unauthorizedMessage = "username or password are incorrect";
+        if (!email || !password) {
+            throw new Error("email and password are required")
+        }
+        const user = await User.findOne({where: {email}})
+        if (!user) {
+            throw new Error(unauthorizedMessage);
+        }
+        const result = await bcrypt.compare(password, user.password);
+        if (!result) {
+            throw new Error(unauthorizedMessage);
+        }
+        return {authToken: Buffer.from(`${user.email}:${password}`).toString("base64")};
+    }        
 };
 
 const Mutation = {
@@ -50,8 +62,6 @@ const Mutation = {
             throw new Error(`Manufacturer with name ${name} already exists`);
         }
         return await Manufacturer.create(manufacturer);
-
-
     },
     updateManufacturer: async (root, { id, manufacturer }, user) => {
         notAuthenticatedUser(user);

@@ -2,9 +2,11 @@ type Query {
     manufacturerList: [Manufacturer]
     getManufacturerById(id: ID!): Manufacturer   
     getPhoneById(id: ID!): Phone
-    loginUser(email: String!, password: String!): String
+    loginUser(email: String!, password: String!): Auth
 }
-
+type Auth{
+    authToken: String!
+}
 type User {
     name: String
     email: String
