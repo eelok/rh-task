@@ -29,7 +29,7 @@ function parseUserFromRequest(req) {
 const validateUser = async ({ req }) => {
   const credentials = parseUserFromRequest(req);
   if (!credentials) {
-    return undefined;
+    return {user: undefined};
   }
   const {email, password} = credentials;
   const user = await getUser(email, password);

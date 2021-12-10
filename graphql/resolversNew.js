@@ -11,14 +11,12 @@ function notAuthenticatedUser(user) {
 const Query = {
     manufacturerList: async () => {
         const manufacturersList = await Manufacturer.findAll();
-        console.log(manufacturersList);
         if (!manufacturersList) {
             throw new Error("not found");
         }
         return manufacturersList;
     },
     getManufacturerById: async (root, args, context) => {
-        console.log(args);
         notAuthenticatedUser(context.user);
         const manufacturerDB = await Manufacturer.findByPk(args.id);
         if (!manufacturerDB) {
@@ -51,8 +49,8 @@ const Query = {
 };
 
 const Mutation = {
-    createManufacturer: async (root, { manufacturer }, user) => {
-        notAuthenticatedUser(user);
+    createManufacturer: async (root, { manufacturer }, context) => {
+        notAuthenticatedUser(context.user);
         const { name, location } = manufacturer;
         console.log(name, location);
         if (!name || !name.trim()) {
@@ -63,15 +61,15 @@ const Mutation = {
         }
         return await Manufacturer.create(manufacturer);
     },
-    updateManufacturer: async (root, { id, manufacturer }, user) => {
-        notAuthenticatedUser(user);
+    updateManufacturer: async (root, { id, manufacturer }, context) => {
+        notAuthenticatedUser(context.user);
         const { name, location } = manufacturer;
         const manufacturerDB = await Manufacturer.findByPk(id);
         const updatedManufacturer = await manufacturerDB.update({ name, location });
         return updatedManufacturer;
     },
-    deleteManufacturer: async (root, { id }, user) => {
-        notAuthenticatedUser(user);
+    deleteManufacturer: async (root, { id }, {user}) => {
+        notAuthenticatedUser({user});
         const manufacturerDB = await Manufacturer.findByPk(id);
         if (!manufacturerDB) {
             throw new Error(`manufacturer with id: ${id} is not found`);
@@ -80,8 +78,8 @@ const Mutation = {
         }
         return false;
     },
-    createPhone: async (root, { manufacturerId, phone }, user) => {
-        notAuthenticatedUser(user);
+    createPhone: async (root, { manufacturerId, phone }, context) => {
+        notAuthenticatedUser(context.user);
         const { name, quantity, releaseDate } = phone;
         const manufacturer = await Manufacturer.findByPk(manufacturerId);
         if (!manufacturer) {
@@ -98,14 +96,14 @@ const Mutation = {
         }
         return await manufacturer.createPhone({ name, quantity, releaseDate, manufacturerId });
     },
-    updatePhone: async (root, { id, phone }, user) => {
-        notAuthenticatedUser(user);
+    updatePhone: async (root, { id, phone }, context) => {
+        notAuthenticatedUser(context.user);
         const phoneDB = await Phone.findByPk(id);
         const { name, quantity, releaseDate } = phone;
         return await phoneDB.update({ name, quantity, releaseDate });
     },
-    deletePhone: async (root, { id }, user) => {
-        notAuthenticatedUser(user);
+    deletePhone: async (root, { id }, context) => {
+        notAuthenticatedUser(context.user);
         const phone = await Phone.findByPk(id);
         if (!phone) {
             throw new Error(`Phone with ${id} was not found`)
