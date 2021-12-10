@@ -7,14 +7,14 @@ const manufacturersRouter = require("./routes/manufacturer");
 const phonesRouter = require("./routes/phone");
 const userRouter = require("./routes/user");
 const {validateUser} = require("./passport/validate");
+const resolversNew = require("./graphql/resolversNew");
+const { METHODS } = require("http");
 // const { graphqlHTTP } = require('express-graphql');
 // const { rootResolver } = require("./graphql/resolver");
 // const { schema } = require("./graphql/schema");
 const port = process.env.PORT || 5555;
 
 
-const resolversNew = require("./graphql/resolversNew");
-const { METHODS } = require("http");
 
 
 app.use(express.json());
