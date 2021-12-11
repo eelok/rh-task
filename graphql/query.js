@@ -3,15 +3,15 @@ const {
     getManufacturerById, 
     findAllPhonesByManufacturerId,
     fetchNestedManufacturer
-} = require("./manufacturer.resolver");
-const {getPhoneById, fetchNestedPhones} = require("./phone.resolver");
-const {loginUser} = require("./user.resolver");
+} = require("./resolvers/manufacturer.resolver");
+const {getPhoneById, fetchNestedPhones} = require("./resolvers/phone.resolver");
+const {loginUser} = require("./resolvers/user.resolver");
 
 const Query = {
-    manufacturerList: manufacturerList,
-    getManufacturerById: getManufacturerById,
-    getPhoneById: getPhoneById,
-    loginUser: loginUser,
+    manufacturerList,
+    getManufacturerById,
+    getPhoneById,
+    loginUser,
     findAllPhonesByManufacturerId  
 };
 

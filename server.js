@@ -1,29 +1,30 @@
-const {app, server} = require("./app");
-const fs = require('fs');
-const { ApolloServer, gql } = require('apollo-server-express');
-const {validateUser} = require("./passport/validate");
-const {Query, Phone, Manufacturer} = require("./graphql/resolvers/query");
-const {Mutation} = require("./graphql/resolvers/mutation");
+const { app, server } = require("./app");
+const fs = require("fs");
+const { ApolloServer, gql } = require("apollo-server-express");
+const { validateUser } = require("./passport/validate");
+const { Query, Phone, Manufacturer } = require("./graphql/query");
+const { Mutation } = require("./graphql/mutation");
 const port = process.env.PORT || 5555;
 
+const typeDefs = gql(
+    fs.readFileSync("./graphql/schema.graphql", { encoding: "utf8" })
+);
 
-const typeDefs = gql(fs.readFileSync("./graphql/schema.graphql", { encoding: "utf8" }));
-
-const server = new ApolloServer(
-  { typeDefs,
+const server = new ApolloServer({
+    typeDefs,
     resolvers: {
-      Query,
-      Phone, 
-      Manufacturer,
-      Mutation
-    }, 
-    context: validateUser
-  });
+        Query,
+        Phone,
+        Manufacturer,
+        Mutation,
+    },
+    context: validateUser,
+});
 
 server.start().then((res) => {
-  server.applyMiddleware({ app });
+    server.applyMiddleware({ app });
 });
 
 app.listen(port, () =>
-  console.info(`Server started on port ${port}` + server.graphqlPath)
+    console.info(`Server started on port ${port}` + server.graphqlPath)
 );

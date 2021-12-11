@@ -8,6 +8,7 @@ const createPhone = async (root, { manufacturerId, phone }, context) => {
     if (!manufacturer) {
         throw Error(`Manufacturer with id ${manufacturerId} doesn't exists`);
     }
+    //TODO: Validation with Joi
     if (!name || !name.trim()) {
         throw Error("name is required")
     }
