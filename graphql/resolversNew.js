@@ -7,7 +7,7 @@ const {
     deleteManufacturer
 } = require("./resolvers/new/manufacturer.resolver");
 const {createUser, loginUser} = require("./resolvers/new/user.resolver");
-const {createPhone} = require("./resolvers/new/phone.resolver");
+const {getPhoneById, createPhone, updatePhone, deletePhone} = require("./resolvers/new/phone.resolver");
 const bcrypt = require("bcrypt");
 const saltRounds = 10;
 //todo 1 
@@ -20,13 +20,7 @@ function notAuthenticatedUser(user) {
 const Query = {
     manufacturerList: manufacturerList,
     getManufacturerById: getManufacturerById,
-    getPhoneById: async (root, { id }) => {
-        const phone = await Phone.findByPk(id);
-        if (!phone) {
-            throw new Error(`Phone with ${id} was not found`);
-        }
-        return phone;
-    },
+    getPhoneById: getPhoneById,
     loginUser: loginUser       
 };
 
@@ -35,23 +29,8 @@ const Mutation = {
     updateManufacturer: updateManufacturer,
     deleteManufacturer: deleteManufacturer,
     createPhone: createPhone,
-    updatePhone: async (root, { id, phone }, context) => {
-        notAuthenticatedUser(context.user);
-        const phoneDB = await Phone.findByPk(id);
-        const { name, quantity, releaseDate } = phone;
-        return await phoneDB.update({ name, quantity, releaseDate });
-    },
-    deletePhone: async (root, { id }, context) => {
-        notAuthenticatedUser(context.user);
-        const phone = await Phone.findByPk(id);
-        if (!phone) {
-            throw new Error(`Phone with ${id} was not found`)
-        }
-        if (await phone.destroy()) {
-            return true;
-        }
-        return false;
-    },
+    updatePhone: updatePhone,
+    deletePhone: deletePhone,
     createUser: createUser
 };
 

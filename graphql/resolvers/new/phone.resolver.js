@@ -25,5 +25,31 @@ const createPhone = async (root, { manufacturerId, phone }, context) => {
     return await manufacturer.createPhone({ name, quantity, releaseDate, manufacturerId });
 };
 
+const updatePhone = async (root, { id, phone }, context) => {
+    notAuthenticatedUser(context.user);
+    const phoneDB = await Phone.findByPk(id);
+    const { name, quantity, releaseDate } = phone;
+    return await phoneDB.update({ name, quantity, releaseDate });
+};
 
-module.exports = {createPhone}
+const deletePhone = async (root, { id }, context) => {
+    notAuthenticatedUser(context.user);
+    const phone = await Phone.findByPk(id);
+    if (!phone) {
+        throw new Error(`Phone with ${id} was not found`)
+    }
+    if (await phone.destroy()) {
+        return true;
+    }
+    return false;
+};
+
+const getPhoneById = async (root, { id }) => {
+    const phone = await Phone.findByPk(id);
+    if (!phone) {
+        throw new Error(`Phone with ${id} was not found`);
+    }
+    return phone;
+};
+
+module.exports = {createPhone, updatePhone, deletePhone, getPhoneById}
