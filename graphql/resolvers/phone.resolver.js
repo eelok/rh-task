@@ -1,10 +1,5 @@
 const {Phone, Manufacturer} = require("../../models");
-
-function notAuthenticatedUser(user) {
-    if (!user) {
-        throw new Error(`user is not authenticated`);
-    }
-}
+const { notAuthenticatedUser } = require("../../passport/validate");
 
 const createPhone = async (root, { manufacturerId, phone }, context) => {
     notAuthenticatedUser(context.user);

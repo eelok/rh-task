@@ -1,10 +1,5 @@
-const {Manufacturer, Phone} = require('../../models');
-//todo refactore
-function notAuthenticatedUser(user) {
-    if (!user) {
-        throw new Error(`user is not authenticated`);
-    }
-}
+const { Manufacturer, Phone } = require('../../models');
+const { notAuthenticatedUser } = require('./../../passport/validate');
 
 const manufacturerList = async () => {
     const manufacturersList = await Manufacturer.findAll();

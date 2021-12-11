@@ -37,5 +37,12 @@ const validateUser = async ({ req }) => {
   return { user };
 };
 
+function notAuthenticatedUser(user) {
+  if (!user) {
+      throw new Error(`user is not authenticated`);
+  }
+}
+
 module.exports.validateUser = validateUser;
 module.exports.parseUserFromRequest = parseUserFromRequest;
+module.exports.notAuthenticatedUser = notAuthenticatedUser;

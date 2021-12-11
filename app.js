@@ -7,8 +7,8 @@ const manufacturersRouter = require("./routes/manufacturer");
 const phonesRouter = require("./routes/phone");
 const userRouter = require("./routes/user");
 const {validateUser} = require("./passport/validate");
-const resolversNew = require("./graphql/resolversNew");
-const { METHODS } = require("http");
+const resolvers = require("./graphql/resolvers");
+
 // const { graphqlHTTP } = require('express-graphql');
 // const { rootResolver } = require("./graphql/resolver");
 // const { schema } = require("./graphql/schema");
@@ -27,7 +27,7 @@ app.use("/user", userRouter);
 const typeDefs = gql(fs.readFileSync("./graphql/schema.graphql", { encoding: "utf8" }));
 const server = new ApolloServer(
   { typeDefs,
-    resolvers: resolversNew, 
+    resolvers: resolvers, 
     context: validateUser
   });
 
