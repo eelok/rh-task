@@ -46,9 +46,9 @@ const getPhoneById = async (root, { id }) => {
     }
     return phone;
 };
-//fetches Phones, when phones are nested in manufacturer example manufacturerList
+
 const fetchNestedPhones = async (manufacturer) => {
     return await Phone.findAll({where: {manufacturerId: manufacturer.id}});
-}
+};
 
 module.exports = {createPhone, updatePhone, deletePhone, getPhoneById, fetchNestedPhones}

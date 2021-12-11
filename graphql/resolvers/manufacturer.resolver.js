@@ -45,18 +45,16 @@ const deleteManufacturer = async (root, { id }, context) => {
         return true;
     }
     return false;
-}
+};
 
 const findAllPhonesByManufacturerId = async (root, {manufacturerId}) => {
     const phones = await Phone.findAll({where: {manufacturerId: manufacturerId}});
     return phones;
-}
+};
 
-//fetches a manufacturer when manufacturer is nested in phone
 const fetchNestedManufacturer = async (phone) => {
     return await Manufacturer.findByPk(phone.manufacturerId);
-}
-
+};
 
 module.exports = {
     manufacturerList,  

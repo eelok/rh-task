@@ -5,9 +5,11 @@ type Query {
     loginUser(email: String!, password: String!): Auth
     findAllPhonesByManufacturerId(manufacturerId: ID!): [Phone]
 }
-type Auth{
+
+type Auth {
     authToken: String!
 }
+
 type User {
     name: String
     email: String
@@ -21,7 +23,7 @@ type Manufacturer {
     phones: [Phone]
 } 
 
-type Phone{
+type Phone {
     id: ID!
     name: String
     quantity: Int
@@ -29,7 +31,7 @@ type Phone{
     manufacturer: Manufacturer
 }
 
-type Mutation{
+type Mutation {
     createManufacturer(manufacturer: ManufacturerInput): Manufacturer
     updateManufacturer(id: ID!, manufacturer: ManufacturerInput): Manufacturer
     deleteManufacturer(id: ID!): Boolean

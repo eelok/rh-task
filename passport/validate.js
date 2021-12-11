@@ -43,6 +43,4 @@ function notAuthenticatedUser(user) {
   }
 }
 
-module.exports.validateUser = validateUser;
-module.exports.parseUserFromRequest = parseUserFromRequest;
-module.exports.notAuthenticatedUser = notAuthenticatedUser;
+module.exports = {validateUser, parseUserFromRequest, notAuthenticatedUser}
