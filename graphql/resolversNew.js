@@ -1,27 +1,24 @@
-const { Manufacturer, Phone, User } = require("../models");
+const { fetchNestedManufacturer } = require("./resolvers/new/manufacturer.resolver");
 const {
     manufacturerList, 
     getManufacturerById, 
     createManufacturer,
     updateManufacturer,
-    deleteManufacturer
+    deleteManufacturer,
+    findAllPhonesByManufacturerId
 } = require("./resolvers/new/manufacturer.resolver");
 const {createUser, loginUser} = require("./resolvers/new/user.resolver");
 const {getPhoneById, createPhone, updatePhone, deletePhone} = require("./resolvers/new/phone.resolver");
 const bcrypt = require("bcrypt");
 const saltRounds = 10;
-//todo 1 
-function notAuthenticatedUser(user) {
-    if (!user) {
-        throw new Error(`user is not authenticated`);
-    }
-}
 
 const Query = {
     manufacturerList: manufacturerList,
     getManufacturerById: getManufacturerById,
     getPhoneById: getPhoneById,
-    loginUser: loginUser       
+    loginUser: loginUser,
+    findAllPhonesByManufacturerId,  
+      
 };
 
 const Mutation = {
@@ -34,4 +31,8 @@ const Mutation = {
     createUser: createUser
 };
 
-module.exports = { Mutation, Query }
+const Phone = {
+    manufacturer: fetchNestedManufacturer
+};
+
+module.exports = { Mutation, Query, Phone }

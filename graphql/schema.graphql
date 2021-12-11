@@ -3,6 +3,7 @@ type Query {
     getManufacturerById(id: ID!): Manufacturer   
     getPhoneById(id: ID!): Phone
     loginUser(email: String!, password: String!): Auth
+    findAllPhonesByManufacturerId(manufacturerId: ID!): [Phone]
 }
 type Auth{
     authToken: String!
@@ -17,6 +18,7 @@ type Manufacturer {
     id: ID!
     name: String
     location: String
+    phones: [Phone]
 } 
 
 type Phone{
@@ -24,6 +26,7 @@ type Phone{
     name: String
     quantity: Int
     releaseDate: String
+    manufacturer: Manufacturer
 }
 
 type Mutation{

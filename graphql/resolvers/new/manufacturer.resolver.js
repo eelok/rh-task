@@ -1,4 +1,4 @@
-const {Manufacturer} = require('../../../models');
+const {Manufacturer, Phone} = require('../../../models');
 //todo refactore
 function notAuthenticatedUser(user) {
     if (!user) {
@@ -8,9 +8,6 @@ function notAuthenticatedUser(user) {
 
 const manufacturerList = async () => {
     const manufacturersList = await Manufacturer.findAll();
-    if (!manufacturersList) {
-        throw new Error("not found");
-    }
     return manufacturersList;
 };
 
@@ -55,10 +52,24 @@ const deleteManufacturer = async (root, { id }, context) => {
     return false;
 }
 
+const findAllPhonesByManufacturerId = async (root, {manufacturerId}) => {
+    const phones = await Phone.findAll({where: {manufacturerId: manufacturerId}});
+    return phones;
+}
+
+//fetches a manufacturer when manufacturer is nested in phone
+const fetchNestedManufacturer = async (phone) => {
+    const manufacturer = await Manufacturer.findByPk(phone.manufacturerId);
+    return manufacturer;
+}
+
+
 module.exports = {
     manufacturerList,  
     getManufacturerById, 
     createManufacturer, 
     updateManufacturer, 
-    deleteManufacturer
+    deleteManufacturer,
+    findAllPhonesByManufacturerId,
+    fetchNestedManufacturer
 }
