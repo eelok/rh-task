@@ -8,7 +8,13 @@ const {
     findAllPhonesByManufacturerId
 } = require("./resolvers/new/manufacturer.resolver");
 const {createUser, loginUser} = require("./resolvers/new/user.resolver");
-const {getPhoneById, createPhone, updatePhone, deletePhone} = require("./resolvers/new/phone.resolver");
+const {
+    getPhoneById, 
+    createPhone, 
+    updatePhone, 
+    deletePhone, 
+    fetchNestedPhones
+} = require("./resolvers/new/phone.resolver");
 const bcrypt = require("bcrypt");
 const saltRounds = 10;
 
@@ -17,8 +23,7 @@ const Query = {
     getManufacturerById: getManufacturerById,
     getPhoneById: getPhoneById,
     loginUser: loginUser,
-    findAllPhonesByManufacturerId,  
-      
+    findAllPhonesByManufacturerId  
 };
 
 const Mutation = {
@@ -35,4 +40,8 @@ const Phone = {
     manufacturer: fetchNestedManufacturer
 };
 
-module.exports = { Mutation, Query, Phone }
+const Manufacturer = {
+    phones: fetchNestedPhones
+}
+
+module.exports = { Mutation, Query, Phone, Manufacturer }

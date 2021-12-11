@@ -59,8 +59,7 @@ const findAllPhonesByManufacturerId = async (root, {manufacturerId}) => {
 
 //fetches a manufacturer when manufacturer is nested in phone
 const fetchNestedManufacturer = async (phone) => {
-    const manufacturer = await Manufacturer.findByPk(phone.manufacturerId);
-    return manufacturer;
+    return await Manufacturer.findByPk(phone.manufacturerId);
 }
 
 
