@@ -1,20 +1,20 @@
-const { fetchNestedManufacturer } = require("./resolvers/new/manufacturer.resolver");
 const {
     manufacturerList, 
     getManufacturerById, 
     createManufacturer,
     updateManufacturer,
     deleteManufacturer,
-    findAllPhonesByManufacturerId
-} = require("./resolvers/new/manufacturer.resolver");
-const {createUser, loginUser} = require("./resolvers/new/user.resolver");
+    findAllPhonesByManufacturerId,
+    fetchNestedManufacturer
+} = require("./resolvers/manufacturer.resolver");
+const {createUser, loginUser} = require("./resolvers/user.resolver");
 const {
     getPhoneById, 
     createPhone, 
     updatePhone, 
     deletePhone, 
     fetchNestedPhones
-} = require("./resolvers/new/phone.resolver");
+} = require("./resolvers/phone.resolver");
 const bcrypt = require("bcrypt");
 const saltRounds = 10;
 

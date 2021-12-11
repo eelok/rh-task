@@ -1,23 +1,29 @@
-const { Manufacturer, Phone } = require("../../models");
-
-const getManufacturerById = async ({ id }) => {
-    const manufacturer = await Manufacturer.findByPk(id);
-    if (!manufacturer) {
-        throw new Error(`manufacturer with id: ${id} is not found`);
+const {Manufacturer, Phone} = require('../../models');
+//todo refactore
+function notAuthenticatedUser(user) {
+    if (!user) {
+        throw new Error(`user is not authenticated`);
     }
-    return manufacturer;
+}
+
+const manufacturerList = async () => {
+    const manufacturersList = await Manufacturer.findAll();
+    return manufacturersList;
 };
 
-const listAll = async () => {
-    const manufacturers = await Manufacturer.findAll();
-    if (!manufacturers) {
-        throw new Error("not found");
+const getManufacturerById = async (root, args, context) => {
+    notAuthenticatedUser(context.user);
+    const manufacturerDB = await Manufacturer.findByPk(args.id);
+    if (!manufacturerDB) {
+        throw new Error(`manufacturer with id: ${args.id} is not found`);
     }
-    return manufacturers;
+    return manufacturerDB;
 };
 
-const createManufacturer = async ({ manufacturer }) => {
-    const { name } = manufacturer;
+const createManufacturer = async (root, { manufacturer }, context) => {
+    notAuthenticatedUser(context.user);
+    const { name, location } = manufacturer;
+    console.log(name, location);
     if (!name || !name.trim()) {
         throw new Error("manufacturer name is required");
     }
@@ -27,28 +33,42 @@ const createManufacturer = async ({ manufacturer }) => {
     return await Manufacturer.create(manufacturer);
 };
 
-const deleteById = async ({ id }) => {
-    const manufacturer = await Manufacturer.findByPk(id);
-    if (!manufacturer) {
-        throw new Error(`manufacturer with id: ${id} is not found`)
-    }
-    if (await manufacturer.destroy()) {
+const updateManufacturer = async (root, { id, manufacturer }, context) => {
+    notAuthenticatedUser(context.user);
+    const { name, location } = manufacturer;
+    const manufacturerDB = await Manufacturer.findByPk(id);
+    const updatedManufacturer = await manufacturerDB.update({ name, location });
+    return updatedManufacturer;
+};
+
+const deleteManufacturer = async (root, { id }, context) => {
+    notAuthenticatedUser(context.user);
+    const manufacturerDB = await Manufacturer.findByPk(id);
+    if (!manufacturerDB) {
+        throw new Error(`manufacturer with id: ${id} is not found`);
+    } if (await manufacturerDB.destroy()) {
         return true;
     }
     return false;
-};
+}
 
-const updateManufacturer = async ({ id, manufacturer }) => {
-    const manufacturerDB = await Manufacturer.findByPk(id);
-    return await manufacturerDB.update(manufacturer);
-};
-///todo ?? не найдет мануфактурер или просто у него нет телефонов
-const findAllPhonesByManufacturerId = async ({ manufacturerId }) => {
-    const phones = await Phone.findAll({ where: { manufacturerId: manufacturerId } });
-    if (!phones.length) {
-        throw new Error("not found")
-    }
+const findAllPhonesByManufacturerId = async (root, {manufacturerId}) => {
+    const phones = await Phone.findAll({where: {manufacturerId: manufacturerId}});
     return phones;
-};
+}
 
-module.exports = { getManufacturerById, listAll, createManufacturer, deleteById, updateManufacturer: updateManufacturer, findAllPhonesByManufacturerId };
+//fetches a manufacturer when manufacturer is nested in phone
+const fetchNestedManufacturer = async (phone) => {
+    return await Manufacturer.findByPk(phone.manufacturerId);
+}
+
+
+module.exports = {
+    manufacturerList,  
+    getManufacturerById, 
+    createManufacturer, 
+    updateManufacturer, 
+    deleteManufacturer,
+    findAllPhonesByManufacturerId,
+    fetchNestedManufacturer
+}

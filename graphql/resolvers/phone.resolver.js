@@ -1,32 +1,39 @@
-const { Phone, Manufacturer } = require('../../models');
+const {Phone, Manufacturer} = require("../../models");
 
-const createPhoneByManufacturerId = async ({manufacturerId, phone}) => {
-        const {name, quantity, releaseDate} = phone;
-        const manufacturer = await Manufacturer.findByPk(manufacturerId);
-        if (!manufacturer) {
-            throw Error(`Manufacturer with id ${manufacturerId} doesn't exists`);
-        }
-        if (!name || !name.trim()) {
-            throw Error("name is required")
-        }
-        if (!releaseDate || !releaseDate.trim()) {
-            throw Error("released date can't be empty")
-        }
-        if (await Phone.findOne({where: {name: name}})) {
-            throw Error(`Phone with name ${name} already exists`);
-        }
-        return await manufacturer.createPhone({name, quantity, releaseDate, manufacturerId});
-};
-
-const getPhoneById = async ({ id }) => {
-    const phone = await Phone.findByPk(id);
-    if (!phone) {
-        throw new Error(`Phone with ${id} was not found`);
+function notAuthenticatedUser(user) {
+    if (!user) {
+        throw new Error(`user is not authenticated`);
     }
-    return phone;
+}
+
+const createPhone = async (root, { manufacturerId, phone }, context) => {
+    notAuthenticatedUser(context.user);
+    const { name, quantity, releaseDate } = phone;
+    const manufacturer = await Manufacturer.findByPk(manufacturerId);
+    if (!manufacturer) {
+        throw Error(`Manufacturer with id ${manufacturerId} doesn't exists`);
+    }
+    if (!name || !name.trim()) {
+        throw Error("name is required")
+    }
+    if (!releaseDate || !releaseDate.trim()) {
+        throw Error("released date can't be empty")
+    }
+    if (await Phone.findOne({ where: { name: name } })) {
+        throw Error(`Phone with name ${name} already exists`);
+    }
+    return await manufacturer.createPhone({ name, quantity, releaseDate, manufacturerId });
 };
 
-const deletePhoneById = async ({ id }) => {
+const updatePhone = async (root, { id, phone }, context) => {
+    notAuthenticatedUser(context.user);
+    const phoneDB = await Phone.findByPk(id);
+    const { name, quantity, releaseDate } = phone;
+    return await phoneDB.update({ name, quantity, releaseDate });
+};
+
+const deletePhone = async (root, { id }, context) => {
+    notAuthenticatedUser(context.user);
     const phone = await Phone.findByPk(id);
     if (!phone) {
         throw new Error(`Phone with ${id} was not found`)
@@ -37,10 +44,16 @@ const deletePhoneById = async ({ id }) => {
     return false;
 };
 
-const updatePhone = async({id, phone}) => {
-    const { name, quantity, releaseDate } = phone;
-    const phoneDB = await Phone.findByPk(id);
-    return await phoneDB.update({ name, quantity, releaseDate });
+const getPhoneById = async (root, { id }) => {
+    const phone = await Phone.findByPk(id);
+    if (!phone) {
+        throw new Error(`Phone with ${id} was not found`);
+    }
+    return phone;
 };
+//fetches Phones, when phones are nested in manufacturer example manufacturerList
+const fetchNestedPhones = async (manufacturer) => {
+    return await Phone.findAll({where: {manufacturerId: manufacturer.id}});
+}
 
-module.exports = { getPhoneById, deletePhoneById, createPhoneByManufacturerId, updatePhone};
+module.exports = {createPhone, updatePhone, deletePhone, getPhoneById, fetchNestedPhones}
