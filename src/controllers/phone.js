@@ -1,4 +1,4 @@
-const {Phone, Manufacturer} = require("../models");
+const {Phone, Manufacturer} = require("../model");
 const {NOT_FOUND, INTERNAL_SERVER_ERROR, BAD_REQUEST, CREATED} = require("../http-status-codes");
 
 exports.getPhoneById = async (req, res) => {

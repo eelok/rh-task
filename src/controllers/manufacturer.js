@@ -1,4 +1,4 @@
-const {Manufacturer, Phone} = require("../models");
+const {Manufacturer, Phone} = require("../model");
 const {INTERNAL_SERVER_ERROR, NOT_FOUND, BAD_REQUEST, CREATED, OK} = require("../http-status-codes");
 
 exports.listAll = async (req, res) => {
