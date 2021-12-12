@@ -1,4 +1,4 @@
-const { User } = require("../model");
+const { User } = require("../models");
 const bcrypt = require("bcrypt");
 
 const fromBase64 = (str) => Buffer.from(str, "base64").toString("utf8");

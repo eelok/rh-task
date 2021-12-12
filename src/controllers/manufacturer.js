@@ -1,4 +1,4 @@
-const { Manufacturer, Phone } = require("../model");
+const { Manufacturer, Phone } = require("../models");
 const {
     INTERNAL_SERVER_ERROR,
     NOT_FOUND,

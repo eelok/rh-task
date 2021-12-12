@@ -4,7 +4,7 @@ const {
     INTERNAL_SERVER_ERROR,
     UNAUTHORIZED,
 } = require("../http-status-codes");
-const { User } = require("../model");
+const { User } = require("../models");
 const bcrypt = require("bcrypt");
 const saltRounds = 10;
 

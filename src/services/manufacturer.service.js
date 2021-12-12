@@ -1,4 +1,4 @@
-const { Manufacturer } = require("../model");
+const { Manufacturer } = require("../models");
 
 const getAllManufacturers = () => Manufacturer.findAll();
 

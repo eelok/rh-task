@@ -1,4 +1,4 @@
-const { Manufacturer, Phone } = require('../../model');
+const { Manufacturer, Phone } = require('../../models');
 const { notAuthenticatedUser } = require('./../../passport/validate');
 
 const manufacturerList = () => Manufacturer.findAll();

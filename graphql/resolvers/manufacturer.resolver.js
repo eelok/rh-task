@@ -1,4 +1,4 @@
-const { Manufacturer, Phone } = require('../../src/model');
+const { Manufacturer, Phone } = require('../../src/models');
 const { notAuthenticatedUser } = require('./../../passport/validate');
 
 const manufacturerList = async () => {

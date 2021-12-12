@@ -1,6 +1,6 @@
 const passport = require("passport");
 const { BasicStrategy } = require("passport-http");
-const { User } = require("../model");
+const { User } = require("../models");
 const bcrypt = require("bcrypt");
 
 passport.use(
