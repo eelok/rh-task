@@ -1,6 +1,6 @@
 type Query {
     manufacturerList: [Manufacturer]
-    getManufacturerById(id: ID!): Manufacturer   
+    getManufacturerById(id: ID!): Manufacturer
     getPhoneById(id: ID!): Phone
     loginUser(email: String!, password: String!): Auth
     findAllPhonesByManufacturerId(manufacturerId: ID!): [Phone]
@@ -21,7 +21,7 @@ type Manufacturer {
     name: String
     location: String
     phones: [Phone]
-} 
+}
 
 type Phone {
     id: ID!
