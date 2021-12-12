@@ -19,5 +19,5 @@ const getManufacturerById = (id) => Manufacturer.findByPk(id);
 module.exports = {
     getAllManufacturers,
     getManufacturerById,
-    createManufacturer,
+    // createManufacturer,
 };
