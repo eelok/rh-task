@@ -42,7 +42,7 @@ type Mutation {
 }
 
 input ManufacturerInput {
-    name: String
+    name: String!
     location: String
 }
 
