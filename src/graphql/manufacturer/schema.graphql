@@ -1,0 +1,24 @@
+    # TODO Split schema to User, Phoe, Manufacturer
+type Query {
+    manufacturerList: [Manufacturer]
+    getManufacturerById(id: ID!): Manufacturer
+    findAllPhonesByManufacturerId(manufacturerId: ID!): [Phone]
+}
+
+type Mutation {
+    createManufacturer(manufacturer: ManufacturerInput): Manufacturer
+    updateManufacturer(id: ID!, manufacturer: ManufacturerInput): Manufacturer
+    deleteManufacturer(id: ID!): Boolean
+}
+
+type Manufacturer {
+    id: ID!
+    name: String
+    location: String
+    phones: [Phone]
+}
+
+input ManufacturerInput {
+    name: String!
+    location: String
+}

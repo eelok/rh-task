@@ -2,13 +2,13 @@ const {
     createManufacturer,
     updateManufacturer,
     deleteManufacturer,
-} = require("./resolvers/manufacturer.resolver");
-const {createUser} = require("./resolvers/user.resolver");
+} = require("./manufacturer/manufacturer.resolver");
+const {createUser} = require("./user/user.resolver");
 const {
     createPhone, 
     updatePhone, 
     deletePhone
-} = require("./resolvers/phone.resolver");
+} = require("./phone/phone.resolver");
 
 const Mutation = {
     createManufacturer,

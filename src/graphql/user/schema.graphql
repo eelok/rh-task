@@ -1,0 +1,24 @@
+# TODO Split schema to User, Phoe, Manufacturer
+type Query {
+    loginUser(email: String!, password: String!): Auth
+}
+
+type Mutation {
+    createUser(user: UserInput): User
+}
+
+type Auth {
+    authToken: String!
+}
+
+type User {
+    name: String
+    email: String
+    password: String
+}
+
+input UserInput {
+    name: String
+    email: String
+    password: String
+}
