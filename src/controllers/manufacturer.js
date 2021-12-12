@@ -31,9 +31,6 @@ exports.getById = async (req, res) => {
 
 exports.createManufacturer = async (req, res) => {
     const { name } = req.body;
-    if (!name || !name.trim()) {
-        return res.status(BAD_REQUEST).send("manufacturer name is required");
-    }
     try {
         if (await Manufacturer.findOne({ where: { name: name } })) {
             return res

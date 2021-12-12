@@ -21,16 +21,17 @@
     "express": "^4.17.1",
     "express-graphql": "^0.12.0",
     "graphql": "^15.7.2",
-    "jest": "^27.3.1",
-    "nodemon": "^2.0.15",
+    "joi": "^17.5.0",
     "passport": "^0.5.0",
     "passport-http": "^0.3.0",
     "pg": "^8.7.1",
     "save": "^2.4.0",
-    "sequelize": "^6.7.0",
-    "supertest": "^6.1.6"
+    "sequelize": "^6.7.0"
   },
   "devDependencies": {
+    "nodemon": "^2.0.15",
+    "supertest": "^6.1.6",
+    "jest": "^27.3.1",
     "sequelize-cli": "^6.2.0"
   }
 }
