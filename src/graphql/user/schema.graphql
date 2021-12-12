@@ -1,4 +1,3 @@
-# TODO Split schema to User, Phoe, Manufacturer
 type Query {
     loginUser(email: String!, password: String!): Auth
 }

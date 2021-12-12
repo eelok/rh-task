@@ -7,8 +7,7 @@ const createPhone = async (root, { manufacturerId, phone }, context) => {
     const manufacturer = await Manufacturer.findByPk(manufacturerId);
     if (!manufacturer) {
         throw Error(`Manufacturer with id ${manufacturerId} doesn't exists`);
-    }
-    //TODO: Validation with Joi
+    }    
     if (!name || !name.trim()) {
         throw Error("name is required")
     }

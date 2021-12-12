@@ -6,7 +6,6 @@ const { Query, Phone, Manufacturer } = require("./graphql/query");
 const { Mutation } = require("./graphql/mutation");
 const port = process.env.PORT || 5555;
 
-//TODO Add multiple schemas here
 const typeDefs = [
     gql(fs.readFileSync("./src/graphql/user/schema.graphql", { encoding: "utf8" })),
     gql(fs.readFileSync("./src/graphql/manufacturer/schema.graphql", { encoding: "utf8" })),
