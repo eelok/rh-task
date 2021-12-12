@@ -7,7 +7,7 @@ const { Mutation } = require("./graphql/mutation");
 const port = process.env.PORT || 5555;
 
 const typeDefs = gql(
-    fs.readFileSync("./graphql/schema.graphql", { encoding: "utf8" })
+    fs.readFileSync("./src/graphql/schema.graphql", { encoding: "utf8" })
 );
 
 const server = new ApolloServer({
