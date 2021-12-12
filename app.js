@@ -13,4 +13,4 @@ app.use("/phone", phonesRouter);
 app.use("/user", userRouter);
 
 
-module.exports = app;
+module.exports = {app};

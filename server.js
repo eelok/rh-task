@@ -1,4 +1,4 @@
-const { app, server } = require("./app");
+const { app } = require("./app");
 const fs = require("fs");
 const { ApolloServer, gql } = require("apollo-server-express");
 const { validateUser } = require("./passport/validate");
