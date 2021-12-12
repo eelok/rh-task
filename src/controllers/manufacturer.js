@@ -1,9 +1,16 @@
-const {Manufacturer, Phone} = require("../model");
-const {INTERNAL_SERVER_ERROR, NOT_FOUND, BAD_REQUEST, CREATED, OK} = require("../http-status-codes");
+const { Manufacturer, Phone } = require("../model");
+const {
+    INTERNAL_SERVER_ERROR,
+    NOT_FOUND,
+    BAD_REQUEST,
+    CREATED,
+    OK,
+} = require("../http-status-codes");
+const manufacturerService = require('../services/manufacturer.service');
 
 exports.listAll = async (req, res) => {
     try {
-        const manufacturers = await Manufacturer.findAll();
+        const manufacturers = await manufacturerService.getAllManufacturers();
         res.send(manufacturers);
     } catch (err) {
         res.sendStatus(INTERNAL_SERVER_ERROR);
@@ -22,21 +29,20 @@ exports.getById = async (req, res) => {
     }
 };
 
-exports.createManufacturer =  async (req, res) => {
-    const {name} = req.body;
+exports.createManufacturer = async (req, res) => {
+    const { name } = req.body;
     if (!name || !name.trim()) {
-        return res
-            .status(BAD_REQUEST)
-            .send("manufacturer name is required");
+        return res.status(BAD_REQUEST).send("manufacturer name is required");
     }
     try {
-        if (await Manufacturer.findOne({where: {name: name}})) {
-            return res.status(BAD_REQUEST).send(`Manufacturer with name ${name} already exists`);
+        if (await Manufacturer.findOne({ where: { name: name } })) {
+            return res
+                .status(BAD_REQUEST)
+                .send(`Manufacturer with name ${name} already exists`);
         }
         const manufacturer = await Manufacturer.create(req.body);
-        res
-            .status(CREATED)
-            .header({Location: `/manufacturer/${manufacturer.id}`})
+        res.status(CREATED)
+            .header({ Location: `/manufacturer/${manufacturer.id}` })
             .send(manufacturer);
     } catch (err) {
         res.sendStatus(INTERNAL_SERVER_ERROR);
@@ -58,9 +64,12 @@ exports.deleteById = async (req, res) => {
 
 exports.update = async (req, res) => {
     try {
-        const {name, location} = req.body;
+        const { name, location } = req.body;
         const manufacturer = await Manufacturer.findByPk(req.params.id);
-        const updatedManufacturer = await manufacturer.update({name, location});
+        const updatedManufacturer = await manufacturer.update({
+            name,
+            location,
+        });
         res.send(updatedManufacturer);
     } catch (err) {
         res.sendStatus(INTERNAL_SERVER_ERROR);
@@ -69,7 +78,9 @@ exports.update = async (req, res) => {
 
 exports.findAllPhonesByManufacturerId = async (req, res) => {
     try {
-        const phones = await Phone.findAll({where: {manufacturerId: req.params.id}});
+        const phones = await Phone.findAll({
+            where: { manufacturerId: req.params.id },
+        });
         if (!phones) {
             return res.sendStatus(NOT_FOUND);
         }
