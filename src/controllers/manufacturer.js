@@ -19,7 +19,7 @@ exports.listAll = async (req, res) => {
 
 exports.getById = async (req, res) => {
     try {
-        const manufacturer = await Manufacturer.findByPk(req.params.id);
+        const manufacturer = await manufacturerService.getManufacturerById(req.params.id);        
         if (!manufacturer) {
             return res.sendStatus(NOT_FOUND);
         }

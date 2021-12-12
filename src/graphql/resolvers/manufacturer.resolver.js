@@ -4,13 +4,9 @@ const manufacturerService = require('../../services/manufacturer.service');
 
 const manufacturerList = () => manufacturerService.getAllManufacturers();
 
-const getManufacturerById = async (root, args, context) => {
+const getManufacturerById = (root, args, context) => {
     notAuthenticatedUser(context.user);
-    const manufacturerDB = await Manufacturer.findByPk(args.id);
-    if (!manufacturerDB) {
-        throw new Error(`manufacturer with id: ${args.id} is not found`);
-    }
-    return manufacturerDB;
+    return manufacturerService.getManufacturerById(args.id);
 };
 
 const createManufacturer = async (root, { manufacturer }, context) => {
