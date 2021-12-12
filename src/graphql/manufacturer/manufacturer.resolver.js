@@ -1,12 +1,11 @@
 const { Manufacturer, Phone } = require('../../model');
 const { notAuthenticatedUser } = require('./../../passport/validate');
-const manufacturerService = require('../../services/manufacturer.service');
 
-const manufacturerList = () => manufacturerService.getAllManufacturers();
+const manufacturerList = () => Manufacturer.findAll();
 
 const getManufacturerById = (root, args, context) => {
     notAuthenticatedUser(context.user);
-    return manufacturerService.getManufacturerById(args.id);
+    return Manufacturer.findByPk(args.id);
 };
 
 const createManufacturer = async (root, { manufacturer }, context) => {
