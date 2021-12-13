@@ -1,10 +1,9 @@
-type Query {
+extend type Query {
     manufacturerList: [Manufacturer]
     getManufacturerById(id: ID!): Manufacturer
-    findAllPhonesByManufacturerId(manufacturerId: ID!): [Phone]
 }
 
-type Mutation {
+extend type Mutation {
     createManufacturer(manufacturer: ManufacturerInput): Manufacturer
     updateManufacturer(id: ID!, manufacturer: ManufacturerInput): Manufacturer
     deleteManufacturer(id: ID!): Boolean
@@ -15,6 +14,10 @@ type Manufacturer {
     name: String
     location: String
     phones: [Phone]
+}
+
+extend type Phone {
+    manufacturer: Manufacturer
 }
 
 input ManufacturerInput {

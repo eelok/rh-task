@@ -1,8 +1,8 @@
-type Query {
+extend type Query {
     loginUser(email: String!, password: String!): Auth
 }
 
-type Mutation {
+extend type Mutation {
     createUser(user: UserInput): User
 }
 
