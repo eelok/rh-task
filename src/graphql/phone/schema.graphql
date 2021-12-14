@@ -9,7 +9,7 @@ extend type Mutation {
     deletePhone(id: ID!): Boolean
 }
 
-extend type Phone {
+type Phone {
     id: ID!
     name: String
     quantity: Int
