@@ -9,7 +9,8 @@ const port = process.env.PORT || 5555;
 const typeDefs = [
     gql(fs.readFileSync("./src/graphql/user/schema.graphql", { encoding: "utf8" })),
     gql(fs.readFileSync("./src/graphql/manufacturer/schema.graphql", { encoding: "utf8" })),
-    gql(fs.readFileSync("./src/graphql/phone/schema.graphql", { encoding: "utf8" }))
+    gql(fs.readFileSync("./src/graphql/phone/schema.graphql", { encoding: "utf8" })),
+    gql(fs.readFileSync("./src/graphql/schema.graphql", { encoding: "utf8" }))
 ];
 
 const server = new ApolloServer({
